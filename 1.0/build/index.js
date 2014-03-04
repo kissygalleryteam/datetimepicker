@@ -866,14 +866,21 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
             created = DOM.get('option', monthSelect);
             if(!created) {
                 var tmpStr = '';
+                var optionEl;
 
                 var monthsList = Moment.months();
                 for(var i = 0; i <= 11; i++) {
                     var tmpMonth = monthsList[i];
-                    tmpStr += '<option value="' + tmpMonth + '" class="month-op-' +
-                        i + '">' + tmpMonth + '</option>';
+                    optionEl = '<option value="' + tmpMonth + '" class="month-op-' +
+                    i + '">' + tmpMonth + '</option>';
+                    tmpStr += optionEl;
+                    if(S.UA.ie < 8) {
+                        monthSelect.options.add(DOM.create(optionEl));
+                    }
                 }
-                monthSelect.innerHTML = tmpStr;
+                if(!S.UA.ie || S.UA.ie >= 8) {
+                    monthSelect.innerHTML = tmpStr;
+                }
             }
 
             var lastSelected = DOM.get('.month-op-selected', self.DTPTarget);

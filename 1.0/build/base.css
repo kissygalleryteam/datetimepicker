@@ -145,7 +145,8 @@ table {
  * 时间样式
  */
 .dtp-time {
-    width: 70px;
+    width: 90px;
+    height: 210px;
     position: relative;
     display: inline-block;
     *display: inline;
@@ -154,14 +155,16 @@ table {
 }
 
 .time-picker {
-    width: 70px;
+    position: relative;
+    *top: 25px;
+    width: 90px;
     height: 156px;
     border: 1px solid #DDD;
     overflow-y: scroll;
     margin: 25px 0 27px 0;
     color: #666;
-    scrollbar-face-color: #000000;  
-    scrollbar-shadow-color: #2D2C4D;  
+    scrollbar-face-color: #ddd;  
+    scrollbar-shadow-color: #f1f1f1;  
     scrollbar-highlight-color:#7D7E94;  
     scrollbar-3dlight-color: #7D7E94;  
     scrollbar-darkshadow-color: #2D2C4D;  
@@ -171,7 +174,7 @@ table {
 
 .dtp-time .icon {
     position: absolute;
-    left: 27px;
+    left: 40px;
 }
 
 .dtp-time .icon-t {
