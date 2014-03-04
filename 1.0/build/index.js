@@ -1,3 +1,9 @@
+/*
+combined files : 
+
+gallery/datetimepicker/1.0/index
+
+*/
 /**
  * 日期和时间选择器
  * @author libiao.lb@tmall.com

@@ -1,0 +1,240 @@
+/**
+ * 全局样式
+ */
+@font-face {
+    font-family: 'icon';
+    src: url('res/icon.eot?93582606');
+    src: url('res/icon.eot?93582606#iefix') format('embedded-opentype'),
+        url('res/icon.woff?93582606') format('woff'),
+        url('res/icon.ttf?93582606') format('truetype'),
+        url('res/icon.svg?93582606#icon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.icon {
+    font-family: "icon";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: 5px;
+    text-align: center;
+    /* For safety - reset parent styles, that can break glyph codes*/
+    font-variant: normal;
+    text-transform: none;
+    cursor: pointer;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 2px;
+    border-color: gray;
+}
+
+.ks-dtp ul, .ks-dtp li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/**
+ * 外壳样式
+ */
+.ks-dtp {
+    background: #FFFFFF;
+    border-bottom: 1px solid #BBBBBB;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    border-top: 1px solid #CCCCCC;
+    color: #333333;
+    display: block;
+    font: 14px/1.2 "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    padding: 8px;
+    padding-left: 0px;
+    padding-top: 2px;
+    position: absolute;
+    z-index: 9999;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+}
+
+.time-picker::-webkit-scrollbar {
+    width: 6px;
+}
+.time-picker::-webkit-scrollbar-track {
+    background-color: #eaeaea;
+    border-left: 1px solid #ccc;
+}
+.time-picker::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+}
+.time-picker::-webkit-scrollbar-thumb:hover {
+    background-color: #aaa;
+}
+
+/**
+ * 日历样式
+ */
+.dtp-date {
+    width: 225px;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    margin-left: 8px;
+    vertical-align: top;
+}
+
+.dtp-date .icon-r {
+    margin-right: 0;
+}
+
+.dtp-date select {
+    margin-right: 8px;
+}
+
+.dtp-date .header-year {
+    width: 60px;
+}
+
+.dtp-date .header-month {
+    width: 90px;
+}
+
+.dtp-date .data-calendar {
+    margin: 4px 0;
+}
+
+.dtp-date .data-calendar th {
+    font-weight: 700;
+    text-align: center;
+    color: #999;
+    border: 1px solid #DDDDDD;
+    cursor: default;
+}
+
+.dtp-date .data-calendar td,
+.dtp-date .data-calendar th {
+    width: 30px;
+    text-align: center;
+    background: #f1f1f1;
+    border: 1px solid #DDDDDD;
+    color: #666666;
+    font-size: 12px;
+    padding: 0px;
+    border-collapse: collapse;
+    cursor: pointer;
+    height: 25px;
+}
+
+.dtp-date .data-calendar th {
+    background: #E9E9E9;
+}
+
+/**
+ * 时间样式
+ */
+.dtp-time {
+    width: 70px;
+    position: relative;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    text-align: center;
+}
+
+.time-picker {
+    width: 70px;
+    height: 156px;
+    border: 1px solid #DDD;
+    overflow-y: scroll;
+    margin: 25px 0 27px 0;
+    color: #666;
+    scrollbar-face-color: #000000;  
+    scrollbar-shadow-color: #2D2C4D;  
+    scrollbar-highlight-color:#7D7E94;  
+    scrollbar-3dlight-color: #7D7E94;  
+    scrollbar-darkshadow-color: #2D2C4D;  
+    scrollbar-track-color: #7D7E94;  
+    scrollbar-arrow-color: #C1C1D1;
+}
+
+.dtp-time .icon {
+    position: absolute;
+    left: 27px;
+}
+
+.dtp-time .icon-t {
+    top: 3px;
+}
+
+.dtp-time .icon-d {
+    bottom: 0;
+}
+
+.picker-list li {
+    border-top: 1px solid #DDDDDD;
+    color: #666666;
+    font-size: 12px;
+    text-align: center;
+    border-collapse: collapse;
+    cursor: pointer;
+    border-bottom-width: 0px;
+    height: 25px;
+    line-height: 25px;
+}
+
+/**
+ * 特别日期样式
+ */
+/*其他月*/
+.dtp-date .data-calendar .other-month-day {
+    color: #c6c6c6;
+    background-color: #fdfdfd;
+}
+
+/*开始结束之间的月*/
+.dtp-date .data-calendar .selected-duration-day {
+    background: #E78FCF;
+    color: white;
+}
+
+/*end中，start的日期*/
+.dtp-date .data-calendar .start-el-date {
+    background-color: #FF0202;
+    color: #FFF;
+}
+
+/*选中的日期*/
+.dtp-date .data-calendar .selected-date,
+.dtp-time .picker-list .selected-time {
+    background: #33AAFF;
+    color: #fff;
+    font-weight: bolder;
+    -webkit-text-shadow: 1px 1px #448686;
+    -moz-text-shadow: 1px 1px #448686;
+    -ms-text-shadow: 1px 1px #448686;
+    text-shadow: 1px 1px #448686;
+}
+
+/*鼠标滑过的日期*/
+.dtp-date .data-calendar td:hover,
+.dtp-time .picker-list li:hover {
+    color: #fff;
+    background: #FF8000;
+}
+
+.dtp-date .data-calendar .other-month-day:hover {
+    color: #fff;
+    background: #FCBC7C;
+}

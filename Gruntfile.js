@@ -125,7 +125,7 @@ module.exports = function(grunt) {
         		}]
         	}
         },
-		// 拷贝 CSS 文件
+		// 拷贝 CSS和Res 文件
 		copy : {
 			main: {
 				files:[
@@ -134,6 +134,7 @@ module.exports = function(grunt) {
 						cwd:'<%= pkg.version %>/',
 						src: [
 							'**/*.css',
+							'res/**',
 							'!build/**/*.css',
 							'!demo/**/*.css'
 						], 
