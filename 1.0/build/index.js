@@ -55,7 +55,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
             inverseButton : false,
             disableDateScroll : false,
             closeOnDateSelect : false,
-            closeOnTimeClick : true,
+            closeOnTimeSelect : true,
             timepicker : true,
             datepicker : true,
             todayButton : true,
@@ -167,6 +167,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
          */
         show : function() {
             var self = this;
+            self.fire('showPanel');
             DOM.css(self.DTPTarget, {
                 'display' : '',
                 'z-index' : '999'
@@ -177,6 +178,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
          * 隐藏元素
          */
         hide : function() {
+            this.fire('hidePanel');
             DOM.css(this.DTPTarget, {
                 'display' : 'none',
                 'z-index' : '1'
@@ -209,6 +211,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
                 //上个月
                 Event.on(DOM.get('.icon-l', self.DTPTarget), 'click', function(e) {
                     e.halt();
+                    self.fire('clickLastMonth');
                     var curDateEl = DOM.get('.selected-date', self.DTPTarget);
                     var curDate = new Moment(DOM.attr(curDateEl, 'data-full-date'));
                     curDate.subtract('month', 1);
@@ -222,6 +225,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
                 //下个月
                 Event.on(DOM.get('.icon-r', self.DTPTarget), 'click', function(e) {
                     e.halt();
+                    self.fire('clickNextMonth');
                     var curDateEl = DOM.get('.selected-date', self.DTPTarget);
                     var curDate = new Moment(DOM.attr(curDateEl, 'data-full-date'));
                     curDate.add('month', 1);
@@ -235,6 +239,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
                 //今天
                 Event.on(DOM.get('.icon-h', self.DTPTarget), 'click', function(e) {
                     e.halt();
+                    self.fire('clickToday');
                     var curDate = new Moment(S.now());
                     self.createDateEl(curDate);
                     self.bindDateEvent();
@@ -252,6 +257,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
                 //滚动日历不会触发年的change响应
                 var yearSelect = DOM.get('.header-year', self.DTPTarget);
                 Event.on(yearSelect, 'change', function(e) {
+                    self.fire('changeYear');
                     var curDateEl = DOM.get('.selected-date', dateEl);
                     var curDate = new Moment(DOM.attr(curDateEl, 'data-full-date'));
                     var curSelectedYear = DOM.val(yearSelect);
@@ -266,6 +272,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
                 //滚动日历不会触发月的change响应
                 var monthSelect = DOM.get('.header-month', self.DTPTarget);
                 Event.on(monthSelect, 'change', function(e) {
+                    self.fire('changeMonth');
                     var curDateEl = DOM.get('.selected-date', dateEl);
                     var curDate = new Moment(DOM.attr(curDateEl, 'data-full-date'));
                     var curSelectedMonth = DOM.val(monthSelect);
@@ -283,6 +290,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
                 var timeEl = DOM.get('.time-picker', self.DTPTarget);
                 var timeUp = DOM.get('.icon-t', self.DTPTarget);
                 Event.on(timeUp, 'click', function(e) {
+                    self.fire('clickTimeUp');
                     var curTimeEl = DOM.get('.selected-time', timeEl);
                     var prevTimeEl = DOM.prev(curTimeEl, 'li');
                     if(prevTimeEl) {
@@ -301,6 +309,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
                 //时间向下按钮的响应
                 var timeDown = DOM.get('.icon-d', self.DTPTarget);
                 Event.on(timeDown, 'click', function(e) {
+                    self.fire('clickTimeDown');
                     var curTimeEl = DOM.get('.selected-time', timeEl);
                     var nextTimeEl = DOM.next(curTimeEl, 'li');
                     if(nextTimeEl) {
@@ -325,6 +334,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
                             'display' : 'none',
                             'z-index' : 1
                         });
+                        self.fire('hidePanel');
                     }
                 });
             }
@@ -378,6 +388,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
             //点击响应
             Event.detach(dateEl, 'click');
             Event.on(dateEl, 'click', function(e) {
+                self.fire('clickDate');
                 var curTarget = e.target;
                 if(curTarget.nodeName.toLowerCase() === 'td') {
                     //如果点击的日期是非当前月的，要重新渲染
@@ -385,6 +396,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
                     var targetMonth = DOM.attr(curTarget, 'data-month');
                     var lastSelected = DOM.get('.selected-date', dateEl);
                     if(curTarget !== lastSelected) {
+                        self.fire('clickDateChange');
                         var lastMonth = DOM.attr(lastSelected, 'data-month');
                         var initData = new Moment(DOM.attr(curTarget, 'data-full-date'));
                         var initDataYear = initData.year();
@@ -477,10 +489,12 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
             Event.detach(timeEl, 'click');
             Event.on(timeEl, 'click', function(e) {
                 e.halt();
+                self.fire('clickTime');
                 var curTarget = e.target;
                 if(curTarget.nodeName.toLowerCase() === 'li') {
                     var lastSelected = DOM.get('.selected-time', timeEl);
                     if(lastSelected !== curTarget) {
+                        self.fire('clickTimeChange');
                         DOM.removeClass(lastSelected, 'selected-time');
                         DOM.addClass(curTarget, 'selected-time');
                         var initData = new Moment(DOM.attr(curTarget, 'data-time'), 'HH:mm');
@@ -659,8 +673,9 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
          */
         fillEl : function(trigger) {
             var self = this;
-            var defaultDate = self.config.value;
+            var defaultDate = self.config.value || S.now();
             var format = '';
+            var initData;
             if(self.config.datepicker) {
                 format = self.config.formatDate;
             }
@@ -670,10 +685,13 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
             if(self.config.datepicker && self.config.timepicker) {
                 format = self.config.format;
             }
-            if(trigger) {
-                defaultDate = DOM.val(trigger);
+            //如果有初始值，其优先级低于输入框的值
+            if(trigger && DOM.val(trigger)) {
+                initData = new Moment(DOM.val(trigger), format);
+            } else {
+                initData = new Moment(defaultDate);
+                DOM.val(trigger, initData.format(format));
             }
-            var initData = defaultDate ? new Moment(defaultDate, format) : new Moment();
 
             //时间数据填入或清除
             timeIndex = 0;

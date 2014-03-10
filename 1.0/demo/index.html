@@ -10,6 +10,9 @@
             margin-left: 15px;
             height: 900px;
         }
+        #J_show1 {
+            margin-top: 205px;
+        }
     </style>
 </head>
 <body>
@@ -54,13 +57,19 @@
         <input style="width:400px; margin-right:50px;" value="1999年9月9日 22点22分22秒" type="text" id="J_val7" />
         </div>
         <div>
+        事件响应
+        </div>
+        <div>
+        <input style="width:400px; margin-right:50px;" value="1899年9月9日 12点23分02秒" type="text" id="J_val9" />
+        <div id="J_show1"></div>
+        </div>
+        <div>
         手动添加
         </div>
         <div>
         <div style="width:800px; margin-right:50px;" type="text" id="J_val8"></div>
         </div>
     </header>
-    <script src="moment.js"></script>
     <script>
         var S = KISSY;
         var srcPath = "../../";
@@ -117,6 +126,23 @@
                   formatDate : 'YYYY年MM月DD日',
                   formatTime : 'HH时mm分ss秒',
                   closeOnDateSelect : true
+              });
+              var i = Datetimepicker({
+                  start : '#J_val9',
+                  format : 'YYYY年MM月DD日 HH时mm分ss秒',
+                  formatDate : 'YYYY年MM月DD日',
+                  formatTime : 'HH时mm分ss秒',
+                  closeOnDateSelect : true
+              });
+              function show(text) {
+                  DOM.get('#J_show1').innerHTML += ('Event: ' + text + ' fired!</br>');
+              }
+              S.each(['clickLastMonth', 'clickNextMonth', 'clickToday', 'changeYear', 'changeMonth',
+                      'clickTimeUp', 'clickTimeDown', 'clickDate', 'clickDateChange', 'clickTime', 'clickTimeChange',
+                      'hidePanel', 'showPanel'], function(item) {
+                  i.on(item, function() {
+                      show(item);
+                  });
               });
         })
     </script>

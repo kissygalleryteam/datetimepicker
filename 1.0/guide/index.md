@@ -21,10 +21,11 @@ Datetimepicker是一个日期和时间选择组件，其中日期数据处理依
 * 初始化配置项
     * value 
         * `默认值''`
-        * 组件的初始化数据，如果不传递，默认使用当前时间
+        * 组件的初始化数据，如果不传递，默认使用当前时间。
     * start
         * `默认值null`,
-        * 组件的创建元素（开始），组件会在该元素点击时，位于元素的下方。如果不传，可以使用show()方法获取HTML DOM，然后自己处理。**不建议使用，当前并未完成event的整体效果，会在下个版本完善**
+        * 组件的创建元素（开始），组件会在该元素点击时，位于元素的下方。如果不传，可以使用show()方法获取HTML DOM，然后自己处理。
+        * 如果start内有值，又传递了`value`这个配置项，优先以start的内的值作为初始化的值
     * end 
         * `默认值null`,
         * 和开始相关联的（结束）
@@ -58,7 +59,7 @@ Datetimepicker是一个日期和时间选择组件，其中日期数据处理依
     * closeOnDateSelect 
         * `默认值false`,
         * 点击日历就关闭组件
-    * closeOnTimeClick 
+    * closeOnTimeSelect 
         * `默认值true`,
         * 点击时间就关闭组件
     * timepicker 
@@ -88,6 +89,29 @@ Datetimepicker是一个日期和时间选择组件，其中日期数据处理依
     * className 
         * `默认值''`
         * 为组件添加额外的class
+* 全局事件响应响应
+
+    | 控制台点击事件 | 描述 |
+    | ------------ | ------------- |
+    | clickLastMonth | 日期导航，上个月按钮被点击 |
+    | clickNextMonth | 日期导航，下个月按钮被点击 |
+    | clickToday | 日期导航，今天按钮 |
+    | changeYear | 日期导航，年的下拉选框值改变 |
+    | changeMonth | 日期导航，月的下拉选框值改变 |
+    | clickTimeUp | 时间导航，向上选择一个时间 |
+    | clickTimeDown | 时间导航，向下选择一个时间 |
+
+    | 组件点击时间 | 描述 |
+    | ------------ | ------------- |
+    | clickDate | 点选日期|
+    | clickDateChange | 点选日期，并导致日期改变 |
+    | clickTime | 点选时间 |
+    | clickTimeChange | 点选时间，并导致时间改变 |
+
+    | 全局事件 | 描述 |
+    | ------------ | ------------- |
+    | hidePanel | 隐藏整个控件|
+    | showPanel | 显示整个控件|
 * 内置方法
     * show()
         * 显示和返回创建的组件元素本身
