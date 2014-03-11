@@ -509,7 +509,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
                         }
                     }
                     //如果设置了点选关闭
-                    if(e.isDefault !== false && self.config.closeOnTimeClick) {
+                    if(e.isDefault !== false && self.config.closeOnTimeSelect) {
                         self.hide();
                     }
                 }
@@ -866,8 +866,17 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
                 var end = self.config.yearEnd;
                 for(var i = self.config.yearStart; i <= end; i++) {
                     tmpStr += '<option value="' + i + '" class="year-op-' + i + '">' + i + '</option>';
+                    if(S.UA.ie < 8) {
+                        var ieOptionEl = document.createElement('OPTION');
+                        ieOptionEl.value = i;
+                        ieOptionEl.text = i;
+                        ieOptionEl.className = 'year-op-' + i;
+                        yearSelect.options.add(ieOptionEl);
+                    }
                 }
-                yearSelect.innerHTML = tmpStr;
+                if(!S.UA.ie || S.UA.ie >= 8) {
+                    yearSelect.innerHTML = tmpStr;
+                }
             }
 
             var lastSelected = DOM.get('.year-op-selected', self.DTPTarget);
@@ -893,7 +902,11 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
                     i + '">' + tmpMonth + '</option>';
                     tmpStr += optionEl;
                     if(S.UA.ie < 8) {
-                        monthSelect.options.add(DOM.create(optionEl));
+                        var ieOptionEl = document.createElement('OPTION');
+                        ieOptionEl.value = tmpMonth;
+                        ieOptionEl.text = tmpMonth;
+                        ieOptionEl.className = 'month-op-' + i;
+                        monthSelect.options.add(ieOptionEl);
                     }
                 }
                 if(!S.UA.ie || S.UA.ie >= 8) {
