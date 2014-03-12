@@ -2,16 +2,17 @@
     "name": "datetimepicker",
     "comName":"Datetimepicker",
     "version": "1.0",
-    "desc": "",
+    "desc": "华丽风骚的日期+时间选择器",
     "tag":"日期时间选择器,时间选择器,datetime picker",
     "githubName":"ianli-sc",
     "author": {
         "name": "承风",
-        "email": "libiao.lb@tmall.com",
+        "email": "ian.primary.li@gmail.com",
         "page": "http://ianli-sc.github.io/"
     },
-	"flexComboPort":"81",
-	"reserveServerPort":"8080",
+    "cover":"http://gtms01.alicdn.com/tps/i1/T1pIuwFClcXXcRzXPM-690-240.png",
+    "flexComboPort":"81",
+    "reserveServerPort":"8080",
     "type": "kissy-gallery",
     "type-url": "http://gallery.kissyui.com/guide"
 }
