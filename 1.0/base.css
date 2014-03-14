@@ -3,11 +3,11 @@
  */
 @font-face {
     font-family: 'icon';
-    src: url('res/icon.eot?93582606');
-    src: url('res/icon.eot?93582606#iefix') format('embedded-opentype'),
-        url('res/icon.woff?93582606') format('woff'),
-        url('res/icon.ttf?93582606') format('truetype'),
-        url('res/icon.svg?93582606#icon') format('svg');
+    src: url('./res/icon.eot?93582606');
+    src: url('./res/icon.eot?93582606#iefix') format('embedded-opentype'),
+        url('./res/icon.woff?93582606') format('woff'),
+        url('./res/icon.ttf?93582606') format('truetype'),
+        url('./res/icon.svg?93582606#icon') format('svg');
     font-weight: normal;
     font-style: normal;
 }
