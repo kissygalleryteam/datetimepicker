@@ -963,6 +963,6 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
     requires : [
         'dom', 'event',
         'gallery/moment/1.0/index',
-        './base-min.css'
+        './base.css'
     ]
 });
