@@ -860,7 +860,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
                 var end = self.config.yearEnd;
                 for(var i = self.config.yearStart; i <= end; i++) {
                     tmpStr += '<option value="' + i + '" class="year-op-' + i + '">' + i + '</option>';
-                    if(S.UA.ie < 8) {
+                    if(S.UA.ie < 10) {
                         var ieOptionEl = document.createElement('OPTION');
                         ieOptionEl.value = i;
                         ieOptionEl.text = i;
@@ -868,7 +868,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
                         yearSelect.options.add(ieOptionEl);
                     }
                 }
-                if(!S.UA.ie || S.UA.ie >= 8) {
+                if(!S.UA.ie || S.UA.ie >= 10) {
                     yearSelect.innerHTML = tmpStr;
                 }
             }
@@ -895,7 +895,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
                     optionEl = '<option value="' + tmpMonth + '" class="month-op-' +
                     i + '">' + tmpMonth + '</option>';
                     tmpStr += optionEl;
-                    if(S.UA.ie < 8) {
+                    if(S.UA.ie < 10) {
                         var ieOptionEl = document.createElement('OPTION');
                         ieOptionEl.value = tmpMonth;
                         ieOptionEl.text = tmpMonth;
@@ -903,7 +903,7 @@ KISSY.add('gallery/datetimepicker/1.0/index', function(S, DOM, Event, Moment) {
                         monthSelect.options.add(ieOptionEl);
                     }
                 }
-                if(!S.UA.ie || S.UA.ie >= 8) {
+                if(!S.UA.ie || S.UA.ie >= 10) {
                     monthSelect.innerHTML = tmpStr;
                 }
             }
