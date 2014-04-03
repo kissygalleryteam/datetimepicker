@@ -4,7 +4,7 @@ Datetimepicker是一个日期和时间选择组件，其中日期数据处理依
 
 * 版本：1.1
 * 作者：承风
-* demo：[http://gallery.kissyui.com/datetimepicker/1.0/demo/index.html](http://gallery.kissyui.com/datetimepicker/1.0/demo/index.html)
+* demo：[http://gallery.kissyui.com/datetimepicker/1.0/demo/index.html](http://gallery.kissyui.com/datetimepicker/1.1/demo/index.html)
 
 ## 升级的改动
 * 停止了对DateTimePicker()方式的调用方式，必须`new` DateTimePicker()，因为要整合组件的事件抛出机制，必须为单例。
