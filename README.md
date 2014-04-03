@@ -12,7 +12,7 @@
 * 添加了丰富的日期格式选择、输入和输出
 
 ### V1.1
-* 停止了对之呢DateTimePicker()的调用方式，必须new DateTimePicker()
+* 停止了对DateTimePicker()方式的调用方式，必须new DateTimePicker()
 * 添加了丰富的函数批量，如获取当前日期、时间
 * 整理了event抛出，不会再出现event响应混乱问题
 * 整理了文档
