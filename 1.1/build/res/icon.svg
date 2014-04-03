@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2014 by original authors @ fontello.com</metadata>
+<defs>
+<font id="fontello" horiz-adv-x="1000" >
+<font-face font-family="fontello" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="home" unicode="&#x68;" d="m888 336q16-16 11-27t-27-11l-84 0l0-310q0-14-1-21t-8-13t-23-6l-204 0l0 310l-204 0l0-310l-194 0q-28 0-35 10t-7 30l0 310l-84 0q-22 0-27 11t11 27l400 402q16 16 38 16t38-16z" horiz-adv-x="900" />
+<glyph glyph-name="down-open-big" unicode="&#x64;" d="m63 570l370-356l372 356q22 26 48 0q26-22 0-48l-396-392q-22-22-48 0l-396 392q-26 26 0 48q24 24 50 0z" horiz-adv-x="866" />
+<glyph glyph-name="left-open-big" unicode="&#x6c;" d="m452-20q26-26 0-48q-26-26-48 0l-392 394q-24 24 0 50l392 394q22 26 48 0q26-22 0-48l-358-372z" horiz-adv-x="465" />
+<glyph glyph-name="right-open-big" unicode="&#x72;" d="m13-20l358 370l-358 372q-26 26 0 48q26 26 48 0l392-394q24-26 0-50l-392-394q-22-26-48 0q-26 22 0 48z" horiz-adv-x="465" />
+<glyph glyph-name="up-open-big" unicode="&#x74;" d="m804 130l-372 358l-370-358q-26-22-50 0q-24 24 0 50l396 390q26 26 48 0l396-390q24-26 0-50q-26-22-48 0z" horiz-adv-x="864" />
+</font>
+</defs>
+</svg>
