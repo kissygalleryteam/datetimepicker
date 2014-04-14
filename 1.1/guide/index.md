@@ -19,6 +19,7 @@ Datetimepicker是一个日期和时间选择组件，其中日期数据处理依
         4. hidePanel
     * 修复了多次触发同一个event的bug
 * 使用了<del>怪蜀黍の爱的</del>JSFiddle来创建了demo，也提供了简版的demo，方便低网速访问
+* 1.0所使用的全局（html级）样式`.icon`, `table`都封装成了`.ks-dtp .icon` 和`.ks-dtp table`以避免污染
 * 完善了文档格式
 
 ## 初始化组件

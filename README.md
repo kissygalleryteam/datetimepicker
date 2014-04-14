@@ -19,3 +19,8 @@
 * demo支持在线调试
 
 
+### V1.1 20140414 update
+* 1.0所使用的全局（html级）样式`.icon`, `table`都封装成了`.ks-dtp .icon` 和`.ks-dtp table`以避免污染
+* 同上，全局iconfont`font-family: "icon";`修改为了`font-family: "ksDtpIcon";`
+
+
