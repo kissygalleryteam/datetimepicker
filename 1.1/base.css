@@ -2,7 +2,7 @@
  * 全局样式
  */
 @font-face {
-    font-family: 'icon';
+    font-family: 'ksDtpIcon';
     src: url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.eot?93582606');
     src: url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.eot?93582606#iefix') format('embedded-opentype'),
         url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.woff?93582606') format('woff'),
@@ -12,8 +12,8 @@
     font-style: normal;
 }
 
-.icon {
-    font-family: "icon";
+.ks-dtp .icon {
+    font-family: "ksDtpIcon";
     font-style: normal;
     font-weight: normal;
     speak: none;
@@ -28,7 +28,7 @@
     cursor: pointer;
 }
 
-table {
+.ks-dtp table {
     border-collapse: collapse;
     border-spacing: 2px;
     border-color: gray;

@@ -136,7 +136,7 @@ Datetimepicker是一个日期和时间选择组件，其中日期数据处理依
 * 事件全部可由new对象的on方法捕获
 
 
-      var a = new DateTimePicker();
+      var a = new DateTimePicker({一些乱七八糟的配置});
       a.on('hidePanle', function() {
           alert('我爱承风咯咯~');
       });
@@ -167,14 +167,14 @@ Datetimepicker是一个日期和时间选择组件，其中日期数据处理依
     * 组件最外层className `ks-dtp`
     * 日历组件最外层className `dtp-date`
     * 时间组件最外层className `dtp-time`
-    * 按钮的className `icon`
-    * 全局样式修改
+    * 按钮的className `.ks-dtp .icon`
+    * `.ks-dtp`选择器下的全局样式修改
         * 修改了table的样式
             * border-collapse: collapse;
             * border-spacing: 2px;
             * border-color: gray;
         * 添加了全局的字体
-            * font-family: 'icon';
+            * font-family: 'ksDtpIcon';
 
 ## bug和建议
 * 请随时邮件、旺旺、github提bug、github发pull request...联系，感谢.
