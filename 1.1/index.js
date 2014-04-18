@@ -3,7 +3,6 @@
  * @author libiao.lb@tmall.com
  * @todo 持续时间标记
  * @todo stat 和 end 联动
- * @todo 样式文件引入问题
  */
 KISSY.add('gallery/datetimepicker/1.1/index', function(S, DOM, Event, Moment) {
     /**
