@@ -1,13 +1,13 @@
 /**
- * 全局样式http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/
+ * 全局样式
  */
 @font-face {
     font-family: 'fontello';
-    src: url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/fontello.eot?57171143');
-    src: url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/fontello.eot?57171143#iefix') format('embedded-opentype'),
-        url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/fontello.woff?57171143') format('woff'),
-        url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/fontello.ttf?57171143') format('truetype'),
-        url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/fontello.svg?57171143#fontello') format('svg');
+    src: url('./res/fontello.eot?57171143');
+    src: url('./res/fontello.eot?57171143#iefix') format('embedded-opentype'),
+        url('./res/fontello.woff?57171143') format('woff'),
+        url('./res/fontello.ttf?57171143') format('truetype'),
+        url('./res/fontello.svg?57171143#fontello') format('svg');
       font-weight: normal;
     font-style: normal;
 }
