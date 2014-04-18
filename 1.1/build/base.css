@@ -1,19 +1,19 @@
 /**
- * 全局样式
+ * 全局样式http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/
  */
 @font-face {
-    font-family: 'ksDtpIcon';
-    src: url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.eot?93582606');
-    src: url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.eot?93582606#iefix') format('embedded-opentype'),
-        url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.woff?93582606') format('woff'),
-        url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.ttf?93582606') format('truetype'),
-        url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.svg?93582606#icon') format('svg');
-    font-weight: normal;
+    font-family: 'fontello';
+    src: url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/fontello.eot?57171143');
+    src: url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/fontello.eot?57171143#iefix') format('embedded-opentype'),
+        url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/fontello.woff?57171143') format('woff'),
+        url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/fontello.ttf?57171143') format('truetype'),
+        url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/fontello.svg?57171143#fontello') format('svg');
+      font-weight: normal;
     font-style: normal;
 }
 
 .ks-dtp .icon {
-    font-family: "ksDtpIcon";
+    font-family: "fontello";
     font-style: normal;
     font-weight: normal;
     speak: none;
