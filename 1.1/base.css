@@ -3,11 +3,11 @@
  */
 @font-face {
     font-family: 'ksDtpIcon';
-    src: url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.eot?93582606');
-    src: url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.eot?93582606#iefix') format('embedded-opentype'),
-        url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.woff?93582606') format('woff'),
-        url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.ttf?93582606') format('truetype'),
-        url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.svg?93582606#icon') format('svg');
+    src: url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.eot'); /* IE9*/
+    src: url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.woff') format('woff'), /* chrome、firefox */
+    url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('http://a.tbcdn.cn/s/kissy/gallery/datetimepicker/1.1/res/icon.svg#uxiconfont') format('svg'); /* iOS 4.1- */
     font-weight: normal;
     font-style: normal;
 }

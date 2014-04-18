@@ -6,11 +6,11 @@
 <font id="fontello" horiz-adv-x="1000" >
 <font-face font-family="fontello" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
 <missing-glyph horiz-adv-x="1000" />
-<glyph glyph-name="home" unicode="&#x68;" d="m888 336q16-16 11-27t-27-11l-84 0l0-310q0-14-1-21t-8-13t-23-6l-204 0l0 310l-204 0l0-310l-194 0q-28 0-35 10t-7 30l0 310l-84 0q-22 0-27 11t11 27l400 402q16 16 38 16t38-16z" horiz-adv-x="900" />
-<glyph glyph-name="down-open-big" unicode="&#x64;" d="m63 570l370-356l372 356q22 26 48 0q26-22 0-48l-396-392q-22-22-48 0l-396 392q-26 26 0 48q24 24 50 0z" horiz-adv-x="866" />
-<glyph glyph-name="left-open-big" unicode="&#x6c;" d="m452-20q26-26 0-48q-26-26-48 0l-392 394q-24 24 0 50l392 394q22 26 48 0q26-22 0-48l-358-372z" horiz-adv-x="465" />
-<glyph glyph-name="right-open-big" unicode="&#x72;" d="m13-20l358 370l-358 372q-26 26 0 48q26 26 48 0l392-394q24-26 0-50l-392-394q-22-26-48 0q-26 22 0 48z" horiz-adv-x="465" />
-<glyph glyph-name="up-open-big" unicode="&#x74;" d="m804 130l-372 358l-370-358q-26-22-50 0q-24 24 0 50l396 390q26 26 48 0l396-390q24-26 0-50q-26-22-48 0z" horiz-adv-x="864" />
+<glyph glyph-name="home" unicode="&#x68;" d="m786 296v-267q0-15-11-26t-25-10h-214v214h-143v-214h-214q-15 0-25 10t-11 26v267q0 1 0 2t0 2l321 264 321-264q1-1 1-4z m124 39l-34-41q-5-5-12-6h-2q-7 0-12 3l-386 322-386-322q-7-4-13-4-7 2-12 7l-35 41q-4 5-3 13t6 12l401 334q18 15 42 15t43-15l136-114v109q0 8 5 13t13 5h107q8 0 13-5t5-13v-227l122-102q5-5 6-12t-4-13z" horiz-adv-x="928.6" />
+<glyph glyph-name="down-open-big" unicode="&#x64;" d="m63 570l370-356 372 356q22 26 48 0 26-22 0-48l-396-392q-22-22-48 0l-396 392q-26 26 0 48 24 24 50 0z" horiz-adv-x="866" />
+<glyph glyph-name="left-open-big" unicode="&#x6c;" d="m452-20q26-26 0-48-26-26-48 0l-392 394q-24 24 0 50l392 394q22 26 48 0 26-22 0-48l-358-372z" horiz-adv-x="465" />
+<glyph glyph-name="right-open-big" unicode="&#x72;" d="m13-20l358 370-358 372q-26 26 0 48 26 26 48 0l392-394q24-26 0-50l-392-394q-22-26-48 0-26 22 0 48z" horiz-adv-x="465" />
+<glyph glyph-name="up-open-big" unicode="&#x75;" d="m804 130l-372 358-370-358q-26-22-50 0-24 24 0 50l396 390q26 26 48 0l396-390q24-26 0-50-26-22-48 0z" horiz-adv-x="864" />
 </font>
 </defs>
 </svg>
