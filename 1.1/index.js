@@ -981,6 +981,6 @@ KISSY.add('gallery/datetimepicker/1.1/index', function(S, DOM, Event, Moment) {
     requires : [
         'dom', 'event',
         'gallery/moment/1.0/index',
-        'gallery/datetimepicker/1.1/base.css'
+        'datetimepicker/1.1/base.css'
     ]
 });
