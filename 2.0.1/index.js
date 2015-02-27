@@ -103,8 +103,6 @@ KISSY.add(function(S, DOM, Event, Moment) {
                         //填入基本数据
                         self.fillEl(startEl);
 
-                        var fillTime = S.now();
-
                         //绑定响应
                         self.bindMainEvents();
 
@@ -675,14 +673,15 @@ KISSY.add(function(S, DOM, Event, Moment) {
             var defaultDate = self.config.value || S.now();
             var format = '';
             var initData;
-            if(self.config.datepicker) {
-                format = self.config.formatDate;
+            var selfConfig = self.config;
+            if(selfConfig.datepicker) {
+                format = selfConfig.formatDate;
             }
-            if(self.config.timepicker) {
-                format = self.config.formatTime;
+            if(selfConfig.timepicker) {
+                format = selfConfig.formatTime;
             }
-            if(self.config.datepicker && self.config.timepicker) {
-                format = self.config.format;
+            if(selfConfig.datepicker && selfConfig.timepicker) {
+                format = selfConfig.format;
             }
             //如果有初始值，其优先级低于输入框的值
             if(trigger && DOM.val(trigger)) {
@@ -716,16 +715,17 @@ KISSY.add(function(S, DOM, Event, Moment) {
         createTimeEl : function(initData) {
             var self = this;
             var timeEl = DOM.get('.picker-list', self.DTPTarget);
-            var tempStr = '';
+            var tempStr = [];
             var tempTime;
             var tempTimeForShow;
+            var selfConfig = self.config;
 
             //为当前时间赋值
-            curDTPTime = initData.format(self.config.formatTime);
+            curDTPTime = initData.format(selfConfig.formatTime);
             //更新全局日期和时间
             self.setGlobalTime();
 
-            var needMode = self.config.minuteSelect;
+            var needMode = selfConfig.minuteSelect;
             var amount = needMode ? 1440 : 24;
             var func = needMode ? 'minutes' : 'hours';
             if(!needMode) {
@@ -733,7 +733,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
                 initData.second(0);
                 initData.millisecond(0);
             }
-            var initTime = initData.format(self.config.formatTime);
+            var initTime = initData.format(selfConfig.formatTime);
 
             var tmpInitDate = new Moment(initData);
             tmpInitDate.hour(0);
@@ -745,8 +745,8 @@ KISSY.add(function(S, DOM, Event, Moment) {
             var initIndex = 0;
             var initCls = '';
             for(var i = 0; i < amount; i++) {
-                tempTimeForShow = tmpInitDate.format(self.config.formatTimeForShow || self.config.formatTime);
-                tempTime = tmpInitDate.format(self.config.formatTime);
+                tempTimeForShow = tmpInitDate.format(selfConfig.formatTimeForShow || selfConfig.formatTime);
+                tempTime = tmpInitDate.format(selfConfig.formatTime);
                 j = needMode ? i%60 : i;
 
                 if(tempTime === initTime) {
@@ -755,12 +755,12 @@ KISSY.add(function(S, DOM, Event, Moment) {
                 } else {
                     initCls = '';
                 }
-                tempStr += '<li' + initCls + ' data-time="' + tmpInitDate.format('HH:mm') +
-                    '" data-index="' + i + '">' + tempTimeForShow + '</li>';
+                tempStr.push('<li' + initCls + ' data-time="' + tmpInitDate.format('HH:mm') +
+                    '" data-index="' + i + '">' + tempTimeForShow + '</li>');
                 tmpInitDate[func](j + 1);
             }
 
-            timeEl.innerHTML = tempStr;
+            timeEl.innerHTML = tempStr.join('');
             return initIndex;
         },
         /**
