@@ -35,10 +35,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
             value : '',
             start : null,
             end : null,
-            acceptTime :  [{
-                start : null,
-                end : null
-            }],
+            acceptTime :  [],
             lang : 'zh-cn',
             format : 'YYYY-MM-DD HH:mm',
             formatTime : 'HH:mm',
@@ -47,7 +44,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
             startWithMonday : false,
             minuteSelect : false,
             inverseButton : false,
-            disableDateScroll : false,
+            disableDateScroll : true,
             closeOnDateSelect : false,
             closeOnTimeSelect : true,
             timepicker : true,
@@ -207,10 +204,6 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     var curDate = new Moment(DOM.attr(curDateEl, 'data-full-date'));
                     curDate.subtract('month', 1);
                     self.createDateEl(curDate);
-                    //输出数据到元素
-                    if(self.trigger) {
-                        self.setDateToTrigger();
-                    }
                     self.fire('clickLastMonth');
                 });
                 //下个月
@@ -220,10 +213,6 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     var curDate = new Moment(DOM.attr(curDateEl, 'data-full-date'));
                     curDate.add('month', 1);
                     self.createDateEl(curDate);
-                    //输出数据到元素
-                    if(self.trigger) {
-                        self.setDateToTrigger();
-                    }
                     self.fire('clickNextMonth');
                 });
                 //今天
@@ -237,10 +226,6 @@ KISSY.add(function(S, DOM, Event, Moment) {
                         self.bindTimeEvent();
                         self.scrollTime(index);
                     }
-                    //输出数据到元素
-                    if(self.trigger) {
-                        self.setDateToTrigger();
-                    }
                     self.fire('clickToday');
                 });
                 //滚动日历不会触发年的change响应
@@ -251,10 +236,6 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     var curSelectedYear = DOM.val(yearSelect);
                     curDate.years(curSelectedYear);
                     self.createDateEl(curDate);
-                    //输出数据到元素
-                    if(self.trigger) {
-                        self.setDateToTrigger();
-                    }
                     self.fire('changeYear');
                 });
                 //滚动日历不会触发月的change响应
@@ -265,51 +246,23 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     var curSelectedMonth = DOM.val(monthSelect);
                     curDate.month(curSelectedMonth);
                     self.createDateEl(curDate);
-                    //输出数据到元素
-                    if(self.trigger) {
-                        self.setDateToTrigger();
-                    }
                     self.fire('changeMonth');
                 });
             }
             if(selfConfig.timepicker) {
-              //时间向上按钮的响应
+                //时间向上按钮的响应
                 var timeEl = DOM.get('.time-picker', self.DTPTarget);
                 var timeUp = DOM.get('.icon-t', self.DTPTarget);
                 Event.on(timeUp, 'click', function(e) {
-                    var curTimeEl = DOM.get('.selected-time', timeEl);
-                    var prevTimeEl = DOM.prev(curTimeEl, 'li');
-                    if(prevTimeEl) {
-                        Event.fire(timeEl, 'click', {
-                            target : prevTimeEl,
-                            isDefault : false
-                        });
-                        var timeIndex = parseInt(DOM.attr(prevTimeEl, 'data-index'));
-                        self.scrollTime(timeIndex);
-                        //输出数据到元素
-                        if(self.trigger) {
-                            self.setDateToTrigger();
-                        }
-                    }
+                    e.halt();
+                    self.scrollTime('top');
                     self.fire('clickTimeUp');
                 });
                 //时间向下按钮的响应
                 var timeDown = DOM.get('.icon-d', self.DTPTarget);
                 Event.on(timeDown, 'click', function(e) {
-                    var curTimeEl = DOM.get('.selected-time', timeEl);
-                    var nextTimeEl = DOM.next(curTimeEl, 'li');
-                    if(nextTimeEl) {
-                        Event.fire(timeEl, 'click', {
-                            target : nextTimeEl,
-                            isDefault : false
-                        });
-                        var timeIndex = parseInt(DOM.attr(nextTimeEl, 'data-index'));
-                        self.scrollTime(timeIndex);
-                        //输出数据到元素
-                        if(self.trigger) {
-                            self.setDateToTrigger();
-                        }
-                    }
+                    e.halt();
+                    self.scrollTime('down');
                     self.fire('clickTimeDown');
                 });
             }
@@ -379,33 +332,41 @@ KISSY.add(function(S, DOM, Event, Moment) {
             Event.on(dateEl, 'click', function(e) {
                 var curTarget = e.target;
                 if(curTarget.nodeName.toLowerCase() === 'td') {
+                    //如果点的时效日期，啥都不干
+                    if(DOM.hasClass(curTarget, 'disable-date')) {
+                        return;
+                    }
                     //如果点击的日期是非当前月的，要重新渲染
                     //重新渲染就不需要再调整样式了
                     var targetMonth = DOM.attr(curTarget, 'data-month');
                     var lastSelected = DOM.get('.selected-date', dateEl);
-                    if(curTarget !== lastSelected) {
-                        var lastMonth = DOM.attr(lastSelected, 'data-month');
-                        var initData = new Moment(DOM.attr(curTarget, 'data-full-date'));
-                        var initDataYear = initData.year();
-                        if(targetMonth !== lastMonth) {
-                            //如果年份超过限制也不响应
-                            if(initDataYear > selfConfig.yearEnd || initDataYear < selfConfig.yearStart) {
-                                return;
-                            }
-                            self.createDateEl(initData);
-                        } else {
-                            DOM.removeClass(lastSelected, 'selected-date');
-                            DOM.addClass(curTarget, 'selected-date');
+                    var lastMonth = DOM.attr(lastSelected, 'data-month');
+                    var initData = new Moment(DOM.attr(curTarget, 'data-full-date'));
+                    var initDataYear = initData.year();
+                    if(targetMonth !== lastMonth) {
+                        //如果年份超过限制也不响应
+                        if(initDataYear > selfConfig.yearEnd || initDataYear < selfConfig.yearStart) {
+                            return;
                         }
-                        //更新全局日期
-                        curDTPDate = initData.format(selfConfig.formatDate);
-                        //更新全局日期和时间
-                        self.setGlobalTime();
-                        //输出数据到元素
-                        if(self.trigger) {
-                            self.setDateToTrigger();
-                        }
-                        self.fire('clickDateChange');
+                        self.createDateEl(initData);
+                    } else {
+                        DOM.removeClass(lastSelected, 'selected-date');
+                        DOM.addClass(curTarget, 'selected-date');
+                    }
+                    //更新全局日期
+                    curDTPDate = initData.format(selfConfig.formatDate);
+                    //更新全局日期和时间
+                    self.setGlobalTime();
+                    //输出数据到元素
+                    if(self.trigger) {
+                        self.setDateToTrigger();
+                    }
+                    self.fire('clickDateChange');
+                    //当存在accepttime，需要重建时间
+                    //当选中日期时，当前选中的时间可能不在支持范围内，需要调整当前时间
+                    if(selfConfig._needCheckAccept && selfConfig.timepicker) {
+                        self.scrollTime(self.createTimeEl(new Moment(curDTPDateTime, selfConfig.format)));
+                        self.setTimeToAccept();
                     }
                     self.fire('clickDate');
                     //如果设置了点选关闭
@@ -495,33 +456,28 @@ KISSY.add(function(S, DOM, Event, Moment) {
             Event.on(timeEl, 'click', function(e) {
                 e.halt();
                 var curTarget = e.target;
+                if(DOM.hasClass(curTarget, 'disable-time')) {
+                    return;
+                }
                 if(curTarget.nodeName.toLowerCase() === 'li') {
                     var lastSelected = DOM.get('.selected-time', timeEl);
-                    if(lastSelected !== curTarget) {
-                        DOM.removeClass(lastSelected, 'selected-time');
-                        DOM.addClass(curTarget, 'selected-time');
-                        var initData = new Moment(DOM.attr(curTarget, 'data-time'), 'HH:mm');
+                    DOM.removeClass(lastSelected, 'selected-time');
+                    DOM.addClass(curTarget, 'selected-time');
+                    var initData = new Moment(DOM.attr(curTarget, 'data-time'), 'HH:mm');
 
-                        //更新全局时间
-                        curDTPTime = initData.format(selfConfig.formatTime);
-                        //更新全局日期和时间
-                        self.setGlobalTime();
-                        //输出数据到元素
-                        if(self.trigger) {
-                            self.setDateToTrigger();
-                        }
-                        //点击上、下不会触发clickTimeChange响应
-                        if(e.isDefault !== false) {
-                            self.fire('clickTimeChange');
-                        }
+                    //更新全局时间
+                    curDTPTime = initData.format(selfConfig.formatTime);
+                    //更新全局日期和时间
+                    self.setGlobalTime();
+                    //输出数据到元素
+                    if(self.trigger) {
+                        self.setDateToTrigger();
+                        self.fire('clickTimeChange');
                     }
-                    //如果是点击的上选或者下选按钮，那么不fire clickeTime Event
-                    if(e.isDefault !== false) {
-                        self.fire('clickTime');
-                        //如果设置了点选关闭
-                        if(selfConfig.closeOnTimeSelect) {
-                            self.hide();
-                        }
+                    self.fire('clickTime');
+                    //如果设置了点选关闭
+                    if(selfConfig.closeOnTimeSelect) {
+                        self.hide();
                     }
                 }
             });
@@ -636,10 +592,6 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     dataMoment[func]('month', 1);
                     //self.createDateEl(curDate);
                     self.createDateEl(dataMoment);
-                    //输出数据到元素
-                    if(self.trigger) {
-                        self.setDateToTrigger();
-                    }
                 }
             });
         },
@@ -667,15 +619,33 @@ KISSY.add(function(S, DOM, Event, Moment) {
         /**
          * 时间的滚动到具体位置
          */
-        scrollTime : function(timeIndex) {
+        scrollTime : function(ori) {
             var self = this;
+            var timePicker = DOM.get('.time-picker', self.DTPTarget);
+            var basicLen = self.config.timeHeightInTimePicker;
             //控制显示
-            if(timeIndex && timeIndex > 2) {
-                //滚动到第四位
-                setTimeout(function() {
-                    DOM.get('.time-picker', self.DTPTarget).scrollTop = self.config.timeHeightInTimePicker * (timeIndex - 3);
-                }, 0);
-            }
+            setTimeout(function() {
+                var scrollTop = timePicker.scrollTop;
+                //向上
+                if(ori === 'top') {
+                    scrollTop -= basicLen;
+                    scrollTop = scrollTop <= 0 ? 0 : scrollTop;
+                //向下
+                } else if(ori === 'down') {
+                    scrollTop += basicLen;
+                    var maxLen = (DOM.query('li', timePicker).length - 1) * basicLen;
+                    scrollTop = scrollTop >= maxLen ? maxLen : scrollTop;
+                //定位
+                } else {
+                    //在第2位以前的都不管
+                    if(ori <= 2) {
+                        scrollTop = 0;
+                    } else {
+                        scrollTop = basicLen * (ori - 2);
+                    }
+                }
+                timePicker.scrollTop = scrollTop;
+            }, 0);
         },
         /**
          * 填入基本数据，基于trigger的数据
@@ -758,6 +728,9 @@ KISSY.add(function(S, DOM, Event, Moment) {
             var j = 0;
             var initIndex = 0;
             var initCls = '';
+            var disableCls = '';
+            var acceptStart;
+            var acceptEnd;
             for(var i = 0; i < amount; i++) {
                 tempTimeForShow = tmpInitDate.format(selfConfig.formatTimeForShow || selfConfig.formatTime);
                 tempTime = tmpInitDate.format(selfConfig.formatTime);
@@ -765,11 +738,31 @@ KISSY.add(function(S, DOM, Event, Moment) {
 
                 if(tempTime === initTime) {
                     initIndex = i;
-                    initCls = ' class="selected-time"';
+                    initCls = 'selected-time';
                 } else {
                     initCls = '';
                 }
-                tempStr.push('<li' + initCls + ' data-time="' + tmpInitDate.format('HH:mm') +
+
+                //如果需要时间间隔检测
+                if(selfConfig._needCheckAccept) {
+                    //重置
+                    disableCls = ' disable-time';
+                    //获取毫秒
+                    var timeStamp = tmpInitDate._d.getTime();
+                    S.each(selfConfig.acceptTime, function(item) {
+                        acceptStart = new Moment(item.start || selfConfig.yearStart)._d.getTime();
+                        acceptEnd = new Moment(item.end || selfConfig.yearEnd)._d.getTime();
+                        if(timeStamp > acceptStart && timeStamp < acceptEnd) {
+                            //啥都不干
+                            disableCls = '';
+                            return false;
+                        }
+                        //粗暴的释放下内存
+                        acceptStart = null;
+                        acceptEnd = null;
+                    });
+                }
+                tempStr.push('<li class="' + initCls + disableCls + '" data-time="' + tmpInitDate.format('HH:mm') +
                     '" data-index="' + i + '">' + tempTimeForShow + '</li>');
                 tmpInitDate[func](j + 1);
             }
@@ -831,11 +824,14 @@ KISSY.add(function(S, DOM, Event, Moment) {
             //如果是end的渲染，需要添加与start关联的内容
             if(self.trigger == selfConfig.end) {
                 var startElMoment = new Moment(DOM.val(selfConfig.start));
-                var startElDateFormat = startElMoment.format(selfConfig.formatDate);
                 var startElYear = startElMoment.years();
                 var startElMonth = startElMoment.months();
                 var startElDate = startElMoment.date();
             }
+            var acceptStart;
+            var acceptEnd;
+            var disableCls = '';
+            var timeStamp;
             while(tmpMonth === minMonth || tmpMonth === curMonth || tmpMonth === maxMonth) {
                 tmpYear = tmpInitDate.years();
                 tmpMonth = tmpInitDate.month();
@@ -853,9 +849,42 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     startElCls = '';
                 }
 
+                //如果需要时间间隔检测
+                if(selfConfig._needCheckAccept) {
+                    //重置
+                    disableCls = ' disable-date';
+                    timeStamp = tmpInitDate._d.getTime();
+                    //获取毫秒
+                    S.each(selfConfig.acceptTime, function(item) {
+                        acceptStart = new Moment(item.start || selfConfig.yearStart);
+                        acceptStart.hour(0);
+                        acceptStart.minute(0);
+                        acceptStart.second(0);
+                        acceptStart.millisecond(0);
+
+                        acceptEnd = new Moment(item.end || selfConfig.yearEnd);
+                        if(selfConfig.minuteSelect) {
+                            acceptEnd.hour(23);
+                            acceptEnd.minute(59);
+                        } else {
+                            acceptEnd.hour(23);
+                            acceptEnd.minute(0);
+                        }
+                        acceptEnd.second(0);
+                        acceptEnd.millisecond(0);
+
+                        if(timeStamp >= acceptStart._d.getTime() && timeStamp <= acceptEnd._d.getTime()) {
+                            disableCls = '';
+                            return false;
+                        }
+                        //粗暴的释放下内存
+                        acceptStart = null;
+                        acceptEnd = null;
+                    });
+                }
                 table += '<td data-date="' + tmpDay + '" data-month="' + tmpMonth +
                     '" data-year="' + tmpInitDate.year() + '" class="' + nowNowCls +
-                    startElCls + '" data-full-date="' + tmpInitDate.format('YYYY-MM-DD') +
+                    startElCls + disableCls + '" data-full-date="' + tmpInitDate.format('YYYY-MM-DD') +
                     '" data-index="' + count + '">' + tmpDay + '</td>';
                 if(weekEnd === tmpInitDate.isoWeekday()) {
                     table += '</tr>';
@@ -938,6 +967,27 @@ KISSY.add(function(S, DOM, Event, Moment) {
             DOM.addClass(curSelected, 'month-op-selected');
         },
         /**
+         * 设置当前时间为第一个可用时间
+         */
+        setTimeToAccept : function() {
+            var timePicker = DOM.get('.picker-list', this.DTPTarget);
+            var currentTimeLi = DOM.get('.selected-time', timePicker);
+            var self = this;
+            if(DOM.hasClass(currentTimeLi, 'disable-time')) {
+                var timeList = DOM.query('li', timePicker);
+                S.each(timeList, function(item) {
+                    if(!DOM.hasClass(item, 'disable-time')) {
+                        Event.fire(item, 'click', {
+                            target : item,
+                            isDefault : false
+                        });
+                        self.scrollTime(DOM.attr(item, 'data-index'));
+                        return false;
+                    }
+                });
+            }
+        },
+        /**
          * 获取当前日期
          */
         getDate : function() {
@@ -985,9 +1035,11 @@ KISSY.add(function(S, DOM, Event, Moment) {
         adjustCfg : function() {
             var self = this;
             var selfConfig = self.config;
-            var errorMsg = 'check self.config error : ';
             selfConfig.start = DOM.get(selfConfig.start);
             selfConfig.end = DOM.get(selfConfig.end);
+            if(selfConfig.acceptTime && selfConfig.acceptTime.length >=1) {
+                selfConfig._needCheckAccept = true;
+            }
         }
     });
 

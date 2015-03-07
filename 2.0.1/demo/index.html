@@ -69,6 +69,13 @@
         <div>
         <div style="width:800px; margin-right:50px;" type="text" id="J_val8"></div>
         </div>
+        <div>
+            时间段2015-03-01 22:00:00 到2015-03-04 11:00:00<br>
+            和 2015-03-07 21:00:00 到2015-03-12 12:00:00
+        </div>
+        <div>
+            <input style="width:400px; margin-right:50px;" value="2015-03-02 22:00:00" type="text" id="J_val10" />
+        </div>
     </header>
     <script>
         var S = KISSY;
@@ -147,6 +154,20 @@
                       show(item);
                   });
               });
+            var j = new Datetimepicker({
+                start : '#J_val10',
+                closeOnDateSelect : false,
+
+                acceptTime : [
+                    {
+                        start : '2015-03-01 22:00:00',
+                        end : '2015-03-04 11:00:00'
+                    },
+                    {
+                        start : '2015-03-07 21:00:00',
+                        end : '2015-03-12 12:00:00'
+                    }]
+            });
         })
     </script>
 </body>
