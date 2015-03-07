@@ -414,12 +414,9 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     }
                 }
             });
-            //第二日历是否绑定hover显示持续时间
+            //日历是否绑定hover显示持续时间
             if(selfConfig.showDateLen && selfConfig.start) {
                 Event.delegate(dateEl, 'mouseenter', 'td', function(e) {
-                    if(self.trigger !== selfConfig.end) {
-                        return;
-                    }
                     var target = e.target;
                     var startTimeVal = DOM.attr(selfConfig.start, 'data-init-time') || DOM.val(selfConfig.start);
                     var startTime = new Moment(startTimeVal, selfConfig.format);
@@ -442,10 +439,19 @@ KISSY.add(function(S, DOM, Event, Moment) {
                             if(targetMonth === startMonth && targetDay < startDay) {
                                 //donothing
                             } else {
-                                var startShowEl = DOM.get('.start-el-date', dateEl);
+                                //如果是第一日历，选中当前如开始
+                                //如果第二日历，选中第一日历的选中日开始
+                                var startShowEl;
+                                if(self.trigger === selfConfig.start) {
+                                    startShowEl = DOM.get('.selected-date', dateEl);
+                                } else {
+                                    startShowEl = DOM.get('.start-el-date', dateEl);
+                                }
+                                //找不到标记日就从第一个日历开始
                                 if(!startShowEl) {
                                     startShowEl = DOM.get('td', dateEl);
                                 }
+
                                 var startIndex = DOM.attr(startShowEl, 'data-index');
                                 var targetIndex = DOM.attr(target, 'data-index');
                                 S.each(tdNode, function(item, index) {
@@ -462,13 +468,13 @@ KISSY.add(function(S, DOM, Event, Moment) {
                         DOM.removeClass(item, 'selected-duration-day')
                     });
                 });
-                Event.delegate(dateEl, 'mouseleave', 'td', function(e) {
-                    if(self.trigger !== selfConfig.end) {
-                        return;
-                    }
+                Event.delegate(dateEl, 'mouseleave click', 'td', function(e) {
                     var curTarget = e.target;
                     //非hover到td上不操作
                     if(curTarget.nodeName.toLowerCase() !== 'td') {
+                        return;
+                    }
+                    if(self.trigger === selfConfig.end && e.type === 'click') {
                         return;
                     }
                     var tdNode = DOM.query('td', dateEl);
