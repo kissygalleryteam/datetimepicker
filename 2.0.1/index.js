@@ -75,16 +75,17 @@ KISSY.add(function(S, DOM, Event, Moment) {
             var self = this;
             //合并配置项和生成目标
             S.mix(self.config, cfg);
-            //设置日期格式
-            Moment.lang(self.config.lang);
             //判断config的配置
             self.adjustCfg(self.config);
+            var selfConfig = self.config;
+            //设置日期格式
+            Moment.lang(selfConfig.lang);
             //生成展示元素
             self.DTPTarget = this.createEl();
             self.bindGlobalEvents();
             //如果设置了开始dom
-            if(self.config.start) {
-                var startEl = self.config.start;
+            if(selfConfig.start) {
+                var startEl = selfConfig.start;
                 var positionStyle = DOM.css(startEl, 'position');
                 if('static' === positionStyle) {
                     DOM.css(startEl, {
@@ -118,8 +119,8 @@ KISSY.add(function(S, DOM, Event, Moment) {
                 //吐到页面
                 DOM.append(self.DTPTarget, 'body');
             }
-            if(self.config.end) {
-                var endEl = self.config.end;
+            if(selfConfig.end) {
+                var endEl = selfConfig.end;
                 var positionStyle = DOM.css(endEl, 'position');
                 if('static' === positionStyle) {
                     DOM.css(endEl, {
@@ -145,7 +146,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
                 });
             }
             //都没有就直接初始化
-            if(!self.config.start && !self.config.end) {
+            if(!selfConfig.start && !selfConfig.end) {
                 this.fillEl();
             }
         },
@@ -179,10 +180,11 @@ KISSY.add(function(S, DOM, Event, Moment) {
         createEl : function() {
             var self = this;
             var tempNode = '<div class="ks-dtp dtp-' + S.now() + '" style="display:none;">';
-            if(self.config.datepicker) {
+            var selfConfig = self.config;
+            if(selfConfig.datepicker) {
                 tempNode += template.datePicker;
             }
-            if(self.config.timepicker) {
+            if(selfConfig.timepicker) {
                 tempNode += template.timePicker;
             }
             tempNode + '</div>';
@@ -194,7 +196,8 @@ KISSY.add(function(S, DOM, Event, Moment) {
          */
         bindGlobalEvents : function() {
             var self = this;
-            if(self.config.datepicker) {
+            var selfConfig = self.config;
+            if(selfConfig.datepicker) {
                 var dateEl = DOM.get('.data-calendar', self.DTPTarget);
                 //绑定导航按钮的响应
                 //上个月
@@ -229,7 +232,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     var curDate = new Moment(S.now());
                     self.createDateEl(curDate);
                     //如果有时间选择器，还应当渲染时间
-                    if(self.config.timepicker) {
+                    if(selfConfig.timepicker) {
                         var index = self.createTimeEl(curDate);
                         self.bindTimeEvent();
                         self.scrollTime(index);
@@ -269,7 +272,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     self.fire('changeMonth');
                 });
             }
-            if(self.config.timepicker) {
+            if(selfConfig.timepicker) {
               //时间向上按钮的响应
                 var timeEl = DOM.get('.time-picker', self.DTPTarget);
                 var timeUp = DOM.get('.icon-t', self.DTPTarget);
@@ -310,11 +313,11 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     self.fire('clickTimeDown');
                 });
             }
-            if(self.config.start) {
+            if(selfConfig.start) {
                 Event.on('body', 'click', function(e) {
                     var target = e.target;
                     var targetParent = DOM.parent(target, '.ks-dtp');
-                    if(self.isShowed === true && target !== self.config.start && target !== self.config.end && targetParent !== self.DTPTarget) {
+                    if(self.isShowed === true && target !== selfConfig.start && target !== selfConfig.end && targetParent !== self.DTPTarget) {
                         self.hide();
                     }
                 });
@@ -325,9 +328,9 @@ KISSY.add(function(S, DOM, Event, Moment) {
          */
         bindMainEvents : function() {
             var self = this;
-            if(self.config.datepicker) {
+            var selfConfig = self.config;
+            if(selfConfig.datepicker) {
                 var dateEl = DOM.get('.data-calendar', self.DTPTarget);
-                var self = this;
                 //绑定日历自身的滚动响应
                 if(S.UA.ie < 8 || this.config.disableDateScroll) {
                     return;
@@ -339,13 +342,13 @@ KISSY.add(function(S, DOM, Event, Moment) {
                 this.bindDateEvent();
             }
             //如果渲染了时间，绑定响应
-            if(self.config.timepicker) {
+            if(selfConfig.timepicker) {
                 //绑定时间的点击响应
                 this.bindTimeEvent();
             }
 
             //今天 按钮控制显示控制
-            if(!self.config.todayButton) {
+            if(!selfConfig.todayButton) {
                 var todayBtn = DOM.get('.icon-h', self.DTPTarget);
                 var headerMonth = DOM.get('.header-month', self.DTPTarget);
                 DOM.css(todayBtn, {
@@ -357,11 +360,11 @@ KISSY.add(function(S, DOM, Event, Moment) {
                 });
             }
             //添加id和classname
-            if(self.config.id) {
-                DOM.attr(self.DTPTarget, 'id', self.config.id);
+            if(selfConfig.id) {
+                DOM.attr(self.DTPTarget, 'id', selfConfig.id);
             }
-            if(self.config.className) {
-                DOM.addClass(self.DTPTarget, self.config.className);
+            if(selfConfig.className) {
+                DOM.addClass(self.DTPTarget, selfConfig.className);
             }
         },
         /**
@@ -369,6 +372,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
          */
         bindDateEvent : function() {
             var self = this;
+            var selfConfig = self.config;
             var dateEl = DOM.get('.data-calendar', self.DTPTarget);
             //点击响应
             Event.detach(dateEl, 'click');
@@ -385,7 +389,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
                         var initDataYear = initData.year();
                         if(targetMonth !== lastMonth) {
                             //如果年份超过限制也不响应
-                            if(initDataYear > self.config.yearEnd || initDataYear < self.config.yearStart) {
+                            if(initDataYear > selfConfig.yearEnd || initDataYear < selfConfig.yearStart) {
                                 return;
                             }
                             self.createDateEl(initData);
@@ -394,7 +398,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
                             DOM.addClass(curTarget, 'selected-date');
                         }
                         //更新全局日期
-                        curDTPDate = initData.format(self.config.formatDate);
+                        curDTPDate = initData.format(selfConfig.formatDate);
                         //更新全局日期和时间
                         self.setGlobalTime();
                         //输出数据到元素
@@ -405,20 +409,20 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     }
                     self.fire('clickDate');
                     //如果设置了点选关闭
-                    if(self.config.closeOnDateSelect) {
+                    if(selfConfig.closeOnDateSelect) {
                         self.hide();
                     }
                 }
             });
             //第二日历是否绑定hover显示持续时间
-            if(self.config.showDateLen && self.config.start) {
+            if(selfConfig.showDateLen && selfConfig.start) {
                 Event.delegate(dateEl, 'mouseenter', 'td', function(e) {
-                    if(self.trigger !== self.config.end) {
+                    if(self.trigger !== selfConfig.end) {
                         return;
                     }
                     var target = e.target;
-                    var startTimeVal = DOM.attr(self.config.start, 'data-init-time') || DOM.val(self.config.start);
-                    var startTime = new Moment(startTimeVal, self.config.format);
+                    var startTimeVal = DOM.attr(selfConfig.start, 'data-init-time') || DOM.val(selfConfig.start);
+                    var startTime = new Moment(startTimeVal, selfConfig.format);
                     var startYear = startTime.years();
                     var targetYear = parseInt(DOM.attr(target, 'data-year'));
                     var startMonth = startTime.months();
@@ -459,7 +463,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     });
                 });
                 Event.delegate(dateEl, 'mouseleave', 'td', function(e) {
-                    if(self.trigger !== self.config.end) {
+                    if(self.trigger !== selfConfig.end) {
                         return;
                     }
                     var curTarget = e.target;
@@ -479,6 +483,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
          */
         bindTimeEvent : function() {
             var self = this;
+            var selfConfig = self.config;
             var timeEl = DOM.get('.time-picker', self.DTPTarget);
             Event.detach(timeEl, 'click');
             Event.on(timeEl, 'click', function(e) {
@@ -492,7 +497,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
                         var initData = new Moment(DOM.attr(curTarget, 'data-time'), 'HH:mm');
 
                         //更新全局时间
-                        curDTPTime = initData.format(self.config.formatTime);
+                        curDTPTime = initData.format(selfConfig.formatTime);
                         //更新全局日期和时间
                         self.setGlobalTime();
                         //输出数据到元素
@@ -508,7 +513,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     if(e.isDefault !== false) {
                         self.fire('clickTime');
                         //如果设置了点选关闭
-                        if(self.config.closeOnTimeSelect) {
+                        if(selfConfig.closeOnTimeSelect) {
                             self.hide();
                         }
                     }
@@ -520,6 +525,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
          */
         bindScrollEvent : function(dateEl) {
             var self = this;
+            var selfConfig = self.config;
             var dataMoment = new Moment(S.now());
             //本响应主要参考如下
             //https://github.com/brandonaaron/jquery-mousewheel/blob/master/jquery.mousewheel.js
@@ -585,7 +591,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
                 //根据位移控制月份变化
                 var func;
                 //可以配置反转滚动
-                if(self.config.inverseButton) {
+                if(selfConfig.inverseButton) {
                     if(deltaY < -2) {
                         func = 'add'
                     }
@@ -607,13 +613,13 @@ KISSY.add(function(S, DOM, Event, Moment) {
                 var curMonth = parseInt(DOM.attr(curDateEl, 'data-month')) + 1;
                 var curYear = parseInt(DOM.attr(curDateEl, 'data-year'));
                 //在年的范围内才执行
-                if(curYear <= self.config.yearEnd && curYear >= self.config.yearStart) {
+                if(curYear <= selfConfig.yearEnd && curYear >= selfConfig.yearStart) {
                     //最大年内最大一个月不能再加了
-                    if(curYear === self.config.yearEnd && curMonth == 12 && func === 'add') {
+                    if(curYear === selfConfig.yearEnd && curMonth == 12 && func === 'add') {
                         return; 
                     }
                     //最小年内最小一个月不能再减了
-                    if(curYear === self.config.yearStart && curMonth == 1 && func === 'subtract') {
+                    if(curYear === selfConfig.yearStart && curMonth == 1 && func === 'subtract') {
                         return;
                     }
                     //var curDate = new Moment(DOM.attr(curDateEl, 'data-full-date'));
@@ -636,15 +642,16 @@ KISSY.add(function(S, DOM, Event, Moment) {
          */
         setDateToTrigger : function() {
             var self = this;
+            var selfConfig = self.config;
             //输出数据到元素
-            if(self.config.datepicker) {
-                if(self.config.timepicker) {
+            if(selfConfig.datepicker) {
+                if(selfConfig.timepicker) {
                     DOM.val(self.trigger, curDTPDateTime);
                 } else {
                     DOM.val(self.trigger, curDTPDate);
                 }
             } else {
-                if(self.config.timepicker) {
+                if(selfConfig.timepicker) {
                     DOM.val(self.trigger, curDTPTime);
                 } else {
                     new Error('no trigger and show nothing!');
@@ -669,10 +676,10 @@ KISSY.add(function(S, DOM, Event, Moment) {
          */
         fillEl : function(trigger) {
             var self = this;
-            var defaultDate = self.config.value || S.now();
+            var selfConfig = self.config;
+            var defaultDate = selfConfig.value || S.now();
             var format = '';
             var initData;
-            var selfConfig = self.config;
             if(selfConfig.datepicker) {
                 format = selfConfig.formatDate;
             }
@@ -691,15 +698,15 @@ KISSY.add(function(S, DOM, Event, Moment) {
             }
 
             //时间数据填入或清除
-            timeIndex = 0;
-            if(self.config.timepicker) {
+            var timeIndex = 0;
+            if(selfConfig.timepicker) {
                 timeIndex = this.createTimeEl(initData);
             } else {
                 DOM.remove(DOM.get('.dtp-time', self.DTPTarget));
             }
 
             //日期数据填入或清除
-            if(self.config.datepicker) {
+            if(selfConfig.datepicker) {
                 this.createDateEl(initData);
             } else {
                 DOM.remove(DOM.get('.dtp-date', self.DTPTarget));
@@ -772,8 +779,9 @@ KISSY.add(function(S, DOM, Event, Moment) {
             var dateEl = DOM.get('.data-calendar', self.DTPTarget);
             var table = '<table><thead><tr>';
             var weekDay = Moment.weekdaysShort();
+            var selfConfig = self.config;
 
-            if(self.config.startWithMonday) {
+            if(selfConfig.startWithMonday) {
                 weekDay.push(weekDay.shift());
             }
             for(var i = 0; i < 7; i++) {
@@ -783,7 +791,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
             table += '<tbody><tr>';
 
             //为全局当前日期赋值
-            curDTPDate = initData.format(self.config.formatDate);
+            curDTPDate = initData.format(selfConfig.formatDate);
             //更新全局日期和时间
             self.setGlobalTime();
 
@@ -792,10 +800,10 @@ KISSY.add(function(S, DOM, Event, Moment) {
             //设置为本月第一天
             tmpInitDate.date(1);
             //向后寻找对应第一个指定的日子
-            var weekEnd = self.config.startWithMonday ? 7 : 6;
-            var weekStart = self.config.startWithMonday ? 1 : 7;
+            var weekEnd = selfConfig.startWithMonday ? 7 : 6;
+            var weekStart = selfConfig.startWithMonday ? 1 : 7;
             //日期循环输出的跳出ISO星期
-            var weekBreak = self.config.startWithMonday ? 7 : 1;
+            var weekBreak = selfConfig.startWithMonday ? 7 : 1;
 
             while(tmpInitDate.isoWeekday() !== weekStart) {
                 tmpInitDate.subtract('d', 1);
@@ -815,9 +823,9 @@ KISSY.add(function(S, DOM, Event, Moment) {
             var count = 0;
 
             //如果是end的渲染，需要添加与start关联的内容
-            if(self.trigger == self.config.end) {
-                var startElMoment = new Moment(DOM.val(self.config.start));
-                var startElDateFormat = startElMoment.format(self.config.formatDate);
+            if(self.trigger == selfConfig.end) {
+                var startElMoment = new Moment(DOM.val(selfConfig.start));
+                var startElDateFormat = startElMoment.format(selfConfig.formatDate);
                 var startElYear = startElMoment.years();
                 var startElMonth = startElMoment.months();
                 var startElDate = startElMoment.date();
@@ -863,8 +871,8 @@ KISSY.add(function(S, DOM, Event, Moment) {
 
             if(!created) {
                 var tmpStr = '';
-                var end = self.config.yearEnd;
-                for(var i = self.config.yearStart; i <= end; i++) {
+                var end = selfConfig.yearEnd;
+                for(var i = selfConfig.yearStart; i <= end; i++) {
                     tmpStr += '<option value="' + i + '" class="year-op-' + i + '">' + i + '</option>';
                     if(S.UA.ie < 10) {
                         var ieOptionEl = document.createElement('OPTION');
@@ -970,9 +978,10 @@ KISSY.add(function(S, DOM, Event, Moment) {
          */
         adjustCfg : function() {
             var self = this;
+            var selfConfig = self.config;
             var errorMsg = 'check self.config error : ';
-            self.config.start = DOM.get(self.config.start);
-            self.config.end = DOM.get(self.config.end);
+            selfConfig.start = DOM.get(selfConfig.start);
+            selfConfig.end = DOM.get(selfConfig.end);
         }
     });
 
