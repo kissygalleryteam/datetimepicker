@@ -35,11 +35,10 @@ KISSY.add(function(S, DOM, Event, Moment) {
             value : '',
             start : null,
             end : null,
-            //TODO 后续支持该配置
-            acceptTime :  {
+            acceptTime :  [{
                 start : null,
                 end : null
-            },
+            }],
             lang : 'zh-cn',
             format : 'YYYY-MM-DD HH:mm',
             formatTime : 'HH:mm',
@@ -103,9 +102,6 @@ KISSY.add(function(S, DOM, Event, Moment) {
                         //填入基本数据
                         self.fillEl(startEl);
 
-                        //绑定响应
-                        self.bindMainEvents();
-
                         var startOffset = DOM.offset(startEl);
                         DOM.css(self.DTPTarget, {
                             'position' : 'absolute',
@@ -151,7 +147,6 @@ KISSY.add(function(S, DOM, Event, Moment) {
             //都没有就直接初始化
             if(!self.config.start && !self.config.end) {
                 this.fillEl();
-                this.bindMainEvents();
             }
         },
         /**
@@ -209,7 +204,6 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     var curDate = new Moment(DOM.attr(curDateEl, 'data-full-date'));
                     curDate.subtract('month', 1);
                     self.createDateEl(curDate);
-                    self.bindDateEvent();
                     //输出数据到元素
                     if(self.trigger) {
                         self.setDateToTrigger();
@@ -223,7 +217,6 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     var curDate = new Moment(DOM.attr(curDateEl, 'data-full-date'));
                     curDate.add('month', 1);
                     self.createDateEl(curDate);
-                    self.bindDateEvent();
                     //输出数据到元素
                     if(self.trigger) {
                         self.setDateToTrigger();
@@ -235,7 +228,6 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     e.halt();
                     var curDate = new Moment(S.now());
                     self.createDateEl(curDate);
-                    self.bindDateEvent();
                     //如果有时间选择器，还应当渲染时间
                     if(self.config.timepicker) {
                         var index = self.createTimeEl(curDate);
@@ -256,7 +248,6 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     var curSelectedYear = DOM.val(yearSelect);
                     curDate.years(curSelectedYear);
                     self.createDateEl(curDate);
-                    self.bindDateEvent();
                     //输出数据到元素
                     if(self.trigger) {
                         self.setDateToTrigger();
@@ -271,7 +262,6 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     var curSelectedMonth = DOM.val(monthSelect);
                     curDate.month(curSelectedMonth);
                     self.createDateEl(curDate);
-                    self.bindDateEvent();
                     //输出数据到元素
                     if(self.trigger) {
                         self.setDateToTrigger();
@@ -339,7 +329,11 @@ KISSY.add(function(S, DOM, Event, Moment) {
                 var dateEl = DOM.get('.data-calendar', self.DTPTarget);
                 var self = this;
                 //绑定日历自身的滚动响应
-                this.bindScrollEvent(dateEl);
+                if(S.UA.ie < 8 || this.config.disableDateScroll) {
+                    return;
+                } else {
+                    this.bindScrollEvent(dateEl);
+                }
 
                 //日历点击响应
                 this.bindDateEvent();
@@ -395,7 +389,6 @@ KISSY.add(function(S, DOM, Event, Moment) {
                                 return;
                             }
                             self.createDateEl(initData);
-                            self.bindDateEvent();
                         } else {
                             DOM.removeClass(lastSelected, 'selected-date');
                             DOM.addClass(curTarget, 'selected-date');
@@ -418,10 +411,11 @@ KISSY.add(function(S, DOM, Event, Moment) {
                 }
             });
             //第二日历是否绑定hover显示持续时间
-            if(self.config.showDateLen && self.config.start && self.trigger == self.config.end) {
-                var tdNode = DOM.query('td', dateEl);
-                Event.detach(tdNode, 'mouseenter');
-                Event.on(tdNode, 'mouseenter', function(e) {
+            if(self.config.showDateLen && self.config.start) {
+                Event.delegate(dateEl, 'mouseenter', 'td', function(e) {
+                    if(self.trigger !== self.config.end) {
+                        return;
+                    }
                     var target = e.target;
                     var startTimeVal = DOM.attr(self.config.start, 'data-init-time') || DOM.val(self.config.start);
                     var startTime = new Moment(startTimeVal, self.config.format);
@@ -431,6 +425,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     var targetMonth = parseInt(DOM.attr(target, 'data-month'));
                     var startDay = startTime.date();
                     var targetDay = parseInt(DOM.attr(target, 'data-date'));
+                    var tdNode = DOM.query('td', dateEl);
 
                     //持续时间，当且仅当目标时间>=开始时间的情况下展示
                     //持续样式的开始，1：当前日历上有开始时间，就用开始时间。2：没有就从第一天
@@ -463,8 +458,16 @@ KISSY.add(function(S, DOM, Event, Moment) {
                         DOM.removeClass(item, 'selected-duration-day')
                     });
                 });
-                Event.detach(tdNode, 'mouseleave');
-                Event.on(tdNode, 'mouseleave', function() {
+                Event.delegate(dateEl, 'mouseleave', 'td', function(e) {
+                    if(self.trigger !== self.config.end) {
+                        return;
+                    }
+                    var curTarget = e.target;
+                    //非hover到td上不操作
+                    if(curTarget.nodeName.toLowerCase() !== 'td') {
+                        return;
+                    }
+                    var tdNode = DOM.query('td', dateEl);
                     S.each(tdNode, function(item, index) {
                         DOM.removeClass(item, 'selected-duration-day')
                     });
@@ -517,9 +520,6 @@ KISSY.add(function(S, DOM, Event, Moment) {
          */
         bindScrollEvent : function(dateEl) {
             var self = this;
-            if(S.UA.ie < 8 || self.config.disableDateScroll) {
-                return;
-            }
             var dataMoment = new Moment(S.now());
             //本响应主要参考如下
             //https://github.com/brandonaaron/jquery-mousewheel/blob/master/jquery.mousewheel.js
@@ -624,7 +624,6 @@ KISSY.add(function(S, DOM, Event, Moment) {
                     dataMoment[func]('month', 1);
                     //self.createDateEl(curDate);
                     self.createDateEl(dataMoment);
-                    self.bindDateEvent();
                     //输出数据到元素
                     if(self.trigger) {
                         self.setDateToTrigger();
@@ -708,6 +707,8 @@ KISSY.add(function(S, DOM, Event, Moment) {
 
             //时间滚动
             this.scrollTime(timeIndex);
+            //绑定响应
+            this.bindMainEvents();
         },
         /**
          * 根据格式，来创建时间选择器的内容
