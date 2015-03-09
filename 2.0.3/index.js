@@ -158,7 +158,7 @@ KISSY.add(function(S, DOM, Event, Moment) {
                 'display' : '',
                 'z-index' : '999'
             });
-            return self.DTPTarget;
+            return self;
         },
         /**
          * 隐藏元素
@@ -330,45 +330,56 @@ KISSY.add(function(S, DOM, Event, Moment) {
             //点击响应
             Event.detach(dateEl, 'click');
             Event.on(dateEl, 'click', function(e) {
+                e.halt();
                 var curTarget = e.target;
                 if(curTarget.nodeName.toLowerCase() === 'td') {
                     //如果点的时效日期，啥都不干
                     if(DOM.hasClass(curTarget, 'disable-date')) {
+                        //发送响应
+                        self.fire('clickDate');
                         return;
                     }
                     //如果点击的日期是非当前月的，要重新渲染
                     //重新渲染就不需要再调整样式了
                     var targetMonth = DOM.attr(curTarget, 'data-month');
                     var lastSelected = DOM.get('.selected-date', dateEl);
-                    var lastMonth = DOM.attr(lastSelected, 'data-month');
-                    var initData = new Moment(DOM.attr(curTarget, 'data-full-date'));
-                    var initDataYear = initData.year();
-                    if(targetMonth !== lastMonth) {
-                        //如果年份超过限制也不响应
-                        if(initDataYear > selfConfig.yearEnd || initDataYear < selfConfig.yearStart) {
-                            return;
-                        }
-                        self.createDateEl(initData);
+                    //如果点的当前就不操作
+                    if(lastSelected === curTarget) {
+                        //发送响应
+                        self.fire('clickDate');
                     } else {
-                        DOM.removeClass(lastSelected, 'selected-date');
-                        DOM.addClass(curTarget, 'selected-date');
+                        var lastMonth = DOM.attr(lastSelected, 'data-month');
+                        var initData = new Moment(DOM.attr(curTarget, 'data-full-date'));
+                        var initDataYear = initData.year();
+                        if(targetMonth !== lastMonth) {
+                            //如果年份超过限制也不响应
+                            if(initDataYear > selfConfig.yearEnd || initDataYear < selfConfig.yearStart) {
+                                return;
+                            }
+                            self.createDateEl(initData);
+                        } else {
+                            DOM.removeClass(lastSelected, 'selected-date');
+                            DOM.addClass(curTarget, 'selected-date');
+                        }
+                        //更新全局日期
+                        curDTPDate = initData.format(selfConfig.formatDate);
+                        //更新全局日期和时间
+                        self.setGlobalTime();
+                        //输出数据到元素
+                        if(self.trigger) {
+                            self.setDateToTrigger();
+                        }
+                        //发送响应
+                        self.fire('clickDate');
+                        //发送变化的响应
+                        self.fire('clickDateChange');
+                        //当存在accepttime，需要重建时间
+                        //当选中日期时，当前选中的时间可能不在支持范围内，需要调整当前时间
+                        if(selfConfig._needCheckAccept && selfConfig.timepicker) {
+                            self.scrollTime(self.createTimeEl(new Moment(curDTPDateTime, selfConfig.format)));
+                            self.setTimeToAccept();
+                        }
                     }
-                    //更新全局日期
-                    curDTPDate = initData.format(selfConfig.formatDate);
-                    //更新全局日期和时间
-                    self.setGlobalTime();
-                    //输出数据到元素
-                    if(self.trigger) {
-                        self.setDateToTrigger();
-                    }
-                    self.fire('clickDateChange');
-                    //当存在accepttime，需要重建时间
-                    //当选中日期时，当前选中的时间可能不在支持范围内，需要调整当前时间
-                    if(selfConfig._needCheckAccept && selfConfig.timepicker) {
-                        self.scrollTime(self.createTimeEl(new Moment(curDTPDateTime, selfConfig.format)));
-                        self.setTimeToAccept();
-                    }
-                    self.fire('clickDate');
                     //如果设置了点选关闭
                     if(selfConfig.closeOnDateSelect) {
                         self.hide();
@@ -456,25 +467,37 @@ KISSY.add(function(S, DOM, Event, Moment) {
             Event.on(timeEl, 'click', function(e) {
                 e.halt();
                 var curTarget = e.target;
-                if(DOM.hasClass(curTarget, 'disable-time')) {
-                    return;
-                }
                 if(curTarget.nodeName.toLowerCase() === 'li') {
-                    var lastSelected = DOM.get('.selected-time', timeEl);
-                    DOM.removeClass(lastSelected, 'selected-time');
-                    DOM.addClass(curTarget, 'selected-time');
-                    var initData = new Moment(DOM.attr(curTarget, 'data-time'), 'HH:mm');
+                    if(DOM.hasClass(curTarget, 'disable-time')) {
+                        if(e.isDefault !== false) {
+                            self.fire('clickTime');
+                        }
+                        return;
+                    } else {
+                        if(DOM.hasClass(curTarget, 'selected-time')) {
+                            if(e.isDefault !== false) {
+                                self.fire('clickTime');
+                            }
+                        } else {
+                            var lastSelected = DOM.get('.selected-time', timeEl);
+                            DOM.removeClass(lastSelected, 'selected-time');
+                            DOM.addClass(curTarget, 'selected-time');
+                            var initData = new Moment(DOM.attr(curTarget, 'data-time'), 'HH:mm');
 
-                    //更新全局时间
-                    curDTPTime = initData.format(selfConfig.formatTime);
-                    //更新全局日期和时间
-                    self.setGlobalTime();
-                    //输出数据到元素
-                    if(self.trigger) {
-                        self.setDateToTrigger();
-                        self.fire('clickTimeChange');
+                            //更新全局时间
+                            curDTPTime = initData.format(selfConfig.formatTime);
+                            //更新全局日期和时间
+                            self.setGlobalTime();
+                            //输出数据到元素
+                            if(self.trigger) {
+                                self.setDateToTrigger();
+                            }
+                            if(e.isDefault !== false) {
+                                self.fire('clickTime');
+                            }
+                            self.fire('clickTimeChange');
+                        }
                     }
-                    self.fire('clickTime');
                     //如果设置了点选关闭
                     if(selfConfig.closeOnTimeSelect) {
                         self.hide();
@@ -689,7 +712,9 @@ KISSY.add(function(S, DOM, Event, Moment) {
             }
 
             //时间滚动
-            this.scrollTime(timeIndex);
+            if(selfConfig.timepicker) {
+                this.scrollTime(timeIndex);
+            }
             //绑定响应
             this.bindMainEvents();
         },
