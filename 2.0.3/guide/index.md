@@ -2,7 +2,7 @@
 
 Datetimepicker是一个日期和时间选择组件，其中日期数据处理依赖于[kg/moment](http://kpm.taobao.net/moment/doc/guide/index.html)。组件中的所有格式值，请阅读moment.js的文档
 
-* 版本：2.0.1
+* 版本：2.0.3
 * 作者：承风
 
 ## 升级重要改动
@@ -12,7 +12,7 @@ Datetimepicker是一个日期和时间选择组件，其中日期数据处理依
 
 ## 初始化组件
 
-    S.use('kg/datetimepicker/2.0.1/index', function (S, Datetimepicker) {
+    S.use('kg/datetimepicker/2.0.3/index', function (S, Datetimepicker) {
          var datetimepicker = new Datetimepicker({参数列表});
     })
 

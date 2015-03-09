@@ -1,7 +1,7 @@
 /*
 combined files : 
 
-kg/datetimepicker/2.0.2/index
+kg/datetimepicker/2.0.3/index
 
 */
 /**
@@ -10,7 +10,7 @@ kg/datetimepicker/2.0.2/index
  * @todo 持续时间标记
  * @todo stat 和 end 联动
  */
-KISSY.add('kg/datetimepicker/2.0.2/index',function(S, DOM, Event, Moment) {
+KISSY.add('kg/datetimepicker/2.0.3/index',function(S, DOM, Event, Moment) {
     /**
      * 基本的外框模板
      */
