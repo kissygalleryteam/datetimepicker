@@ -1,8 +1,6 @@
 ## datetimepicker
 
-* 版本：1.1
-* 教程：[http://gallery.kissyui.com/datetimepicker/1.1/guide/index.html](http://gallery.kissyui.com/datetimepicker/1.0/guide/index.html)
-* demo：[http://gallery.kissyui.com/datetimepicker/1.1/demo/index.html](http://gallery.kissyui.com/datetimepicker/1.0/demo/index.html)
+* 版本：2.0.3
 
 ## changelog
 
@@ -20,7 +18,16 @@
 
 
 ### V1.1 20140414 update
+
 * 1.0所使用的全局（html级）样式`.icon`, `table`都封装成了`.ks-dtp .icon` 和`.ks-dtp table`以避免污染
 * 同上，全局iconfont`font-family: "icon";`修改为了`font-family: "ksDtpIcon";`
 
+### V2.0.0 
 
+* 迁移到kg
+
+### V2.0.3
+
+* 优化了调用性能，事件绑定更清晰
+* 添加了acceptTime功能，传递数组对象，日历上仅能点击acceptTime内设定的日期
+* 丰富了demo
