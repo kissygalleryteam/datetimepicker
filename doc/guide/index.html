@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>datetimepicker</title>
+    <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://docs.kissyui.com/1.4/source/guideline/templates/assets/com-prettify.css">
+    <link rel="stylesheet" href="http://docs.kissyui.com/1.4/source/guideline/templates/assets/com.css">
+    <script src="http://cdn.staticfile.org/jquery/2.1.1-rc2/jquery.min.js"></script>
+    <script src="http://cdn.staticfile.org/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="http://cdn.staticfile.org/prettify/r298/prettify.min.js"></script>
+    <script src="http://g.tbcdn.cn/kissy/k/1.4.8/seed-min.js" data-config="{combine:true}"></script>
+  </head>
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+    <div id="header"><a href="http://docs.kissyui.com/" class="logo">kissy</a>
+      <nav><a href="http://docs.kissyui.com/1.4/docs/html/coms.html">优秀组件推荐</a></nav>
+    </div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3 bs-docs-sidebar">
+          <ul data-spy="affix" data-offset-top="0" class="nav nav-list bs-docs-sidenav"></ul>
+        </div>
+        <div class="span9 bs-docs-content">
+          <h1 data-id="undefined" class="title">datetimepicker</h1>
+          <p class="author-wrapper"><span>组件有问题？旺旺联系作者：</span><a href="https://github.com/ianli-sc" target="_blank" data-name="承风" class="author"><img src="http://0.gravatar.com/avatar/b31d8f1390e6b2fd40328334a18c4c66?s=60" alt="承风"></a><span class="author-name">承风</span>
+          </p>
+          <div class="common-link"><a href="../demo/index.html" target="_blank" class="demo">示例</a><a href="https://github.com/kissygalleryteam/datetimepicker" target="_blank" class="source">源码</a></div>
+          <p class="com-info"><span class="info-label">View</span><span data-com="datetimepicker" class="J_View">1939</span></p>
+          <p class="com-info"><span class="info-label">所属分类</span><a href="http://kpm.taobao.net/list/时间">时间</a>
+          </p>
+          <p class="com-info"><span class="info-label">kissy版本</span><span>1.4.X</span>
+          </p><h2 id="-">综述</h2>
+<p>Datetimepicker是一个日期和时间选择组件，其中日期数据处理依赖于<a href="[http://gallery.kissyui.com/moment/doc/guide/index.html](http://gallery.kissyui.com/moment/doc/guide/index.html">kg/moment</a>)。组件中的所有格式值，请阅读moment.js的文档</p>
+<ul>
+<li>版本：2.0.0</li>
+<li>作者：承风</li>
+</ul>
+<h2 id="-">升级的改动</h2>
+<ul>
+<li>停止了对DateTimePicker()方式的调用方式，必须<code>new</code> DateTimePicker()，因为要整合组件的事件抛出机制，必须为单例。</li>
+<li>添加了<code>getDate()</code>, <code>getTime()</code>, <code>getDateTime()</code>, <code>getDateStr()</code>, <code>getTimeStr()</code>, <code>getDateTimeStr()</code> 6个函数。<ul>
+<li>可以在任何时候调用。包括event触发时。组件只负责触发event，不搞回调，请自行捕获</li>
+<li>调用方法以获取当前的<code>日期(Date格式，只保证年月日是正确的，不保证其时分秒是正确的时分秒)</code>, <code>时间(Date格式，只保证时分秒是正确的，不保证年月日)</code>, <code>日期时间(Date格式)</code>, <code>日期的字符串</code>, <code>时间的字符串</code>, <code>日期时间完整字符串</code>,</li>
+</ul>
+</li>
+<li>整理了事件的fire机制<ul>
+<li>优先级如下：<ol>
+<li>showPanel</li>
+<li>click<em>*</em>Change（例如点击不同日期，会触发clickDateChange）</li>
+<li>click<em>*</em> (日期、上个月、下个月、现在。。。的点击响应)</li>
+<li>hidePanel</li>
+</ol>
+</li>
+<li>修复了多次触发同一个event的bug</li>
+</ul>
+</li>
+<li>使用了<del>怪蜀黍の爱的</del>JSFiddle来创建了demo，也提供了简版的demo，方便低网速访问</li>
+<li>1.0所使用的全局（html级）样式<code>.icon</code>, <code>table</code>都封装成了<code>.ks-dtp .icon</code> 和<code>.ks-dtp table</code>以避免污染</li>
+<li>完善了文档格式</li>
+</ul>
+<h2 id="-">初始化组件</h2>
+<pre><code>S.use(&#39;kg/datetimepicker/2.0.0/index&#39;, function (S, Datetimepicker) {
+     var datetimepicker = new Datetimepicker({参数列表});
+})
+</code></pre><h2 id="-">兼容性</h2>
+<ul>
+<li>IE6-10测试通过</li>
+<li>IOS下FF、Chrome、Safari测试过</li>
+<li>Windows下Chrome、360测试通过</li>
+</ul>
+<h2 id="api-">API说明</h2>
+<h3 id="-">初始化配置项</h3>
+<ul>
+<li>配置项为object，内部参数如下<ul>
+<li>value <ul>
+<li><code>默认值&#39;&#39;</code></li>
+<li>组件的初始化数据，如果不传递，默认使用当前时间。</li>
+</ul>
+</li>
+<li>start<ul>
+<li><code>默认值null</code>,</li>
+<li>组件的创建元素（开始），组件会在该元素点击时，位于元素的下方。如果不传，可以使用show()方法获取HTML DOM，然后自己处理。</li>
+<li>如果start内有值，又传递了<code>value</code>这个配置项，优先以start的内的值作为初始化的值</li>
+</ul>
+</li>
+<li>end <ul>
+<li><code>默认值null</code>,</li>
+<li>和开始相关联的（结束）</li>
+</ul>
+</li>
+<li>lang <ul>
+<li><code>默认值&#39;zh-cn&#39;</code>,</li>
+<li>国际化语言，当前支持中文<code>zh-cn</code>，中文繁体<code>zh-tw</code>，英文<code>en</code></li>
+</ul>
+</li>
+<li>format <ul>
+<li><code>默认值&#39;YYYY-MM-DD HH:mm&#39;</code>,</li>
+<li>点选日期+时间返回值的格式，且为日期+时间初始化的传递值的格式</li>
+</ul>
+</li>
+<li>formatTime <ul>
+<li><code>默认值&#39;HH:mm&#39;</code>,</li>
+<li>时间的返回值和初始化的格式</li>
+</ul>
+</li>
+<li>formatTimeForShow <ul>
+<li><code>默认值&#39;Ahh:mm&#39;</code>,</li>
+<li>时间选择器上展示的时间的格式</li>
+</ul>
+</li>
+<li>formatDate <ul>
+<li><code>默认值&#39;YYYY-MM-DD&#39;</code>,</li>
+<li>日期的返回值和初始化的格式</li>
+</ul>
+</li>
+<li>startWithMonday <ul>
+<li><code>默认值false</code>,</li>
+<li>每周以周1为第一天</li>
+</ul>
+</li>
+<li>minuteSelect <ul>
+<li><code>默认值false</code>,</li>
+<li>时间选择器是否支持分钟级别的点选</li>
+</ul>
+</li>
+<li>inverseButton <ul>
+<li><code>默认值false</code></li>
+<li>IE &gt; 8 和高级浏览器中，鼠标滚轮切换日历的方向反转 </li>
+</ul>
+</li>
+<li>disableDateScroll <ul>
+<li><code>默认值false</code>,</li>
+<li>禁用在日历上滚定鼠标，以按月为单位切换日历</li>
+</ul>
+</li>
+<li>closeOnDateSelect <ul>
+<li><code>默认值false</code>,</li>
+<li>点击日历就关闭组件</li>
+</ul>
+</li>
+<li>closeOnTimeSelect <ul>
+<li><code>默认值true</code>,</li>
+<li>点击时间就关闭组件</li>
+</ul>
+</li>
+<li>timepicker <ul>
+<li><code>默认值true</code>,</li>
+<li>使用时间选择器</li>
+</ul>
+</li>
+<li>datepicker <ul>
+<li><code>默认值true</code>,</li>
+<li>使用日历选择器</li>
+</ul>
+</li>
+<li>todayButton <ul>
+<li><code>默认值true</code>,</li>
+<li>显示<code>home</code>今天按钮</li>
+</ul>
+</li>
+<li>showDateLen <ul>
+<li><code>默认值true</code>,</li>
+<li>当赋值start和end后，在end的鼠标指针hover上去后，显示从start的时间到end的时间之间时间的特殊样式</li>
+</ul>
+</li>
+<li>yearStart <ul>
+<li><code>默认值1919</code></li>
+<li>年下拉框的最小值</li>
+</ul>
+</li>
+<li>yearEnd <ul>
+<li><code>默认值2049</code></li>
+<li>年下拉框的最大值</li>
+</ul>
+</li>
+<li>timeHeightInTimePicker <ul>
+<li><code>默认值26</code>| </li>
+<li>时间选择器的单个可选时间的高度</li>
+</ul>
+</li>
+<li>id <ul>
+<li><code>默认值&#39;&#39;</code></li>
+<li>为组件添加额外的id</li>
+</ul>
+</li>
+<li>className <ul>
+<li><code>默认值&#39;&#39;</code></li>
+<li>为组件添加额外的class</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="-">全局事件响应响应</h3>
+<table>
+<thead>
+<tr>
+<th>控制台点击事件</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>clickLastMonth</td>
+<td>日期导航，上个月按钮被点击</td>
+</tr>
+<tr>
+<td>clickNextMonth</td>
+<td>日期导航，下个月按钮被点击</td>
+</tr>
+<tr>
+<td>clickToday</td>
+<td>日期导航，今天按钮</td>
+</tr>
+<tr>
+<td>changeYear</td>
+<td>日期导航，年的下拉选框值改变</td>
+</tr>
+<tr>
+<td>changeMonth</td>
+<td>日期导航，月的下拉选框值改变</td>
+</tr>
+<tr>
+<td>clickTimeUp</td>
+<td>时间导航，向上选择一个时间</td>
+</tr>
+<tr>
+<td>clickTimeDown</td>
+<td>时间导航，向下选择一个时间</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>组件点击时间</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>clickDate</td>
+<td>点选日期</td>
+</tr>
+<tr>
+<td>clickDateChange</td>
+<td>点选日期，并导致日期改变</td>
+</tr>
+<tr>
+<td>clickTime</td>
+<td>点选时间</td>
+</tr>
+<tr>
+<td>clickTimeChange</td>
+<td>点选时间，并导致时间改变</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>全局事件</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hidePanel</td>
+<td>隐藏整个控件</td>
+</tr>
+<tr>
+<td>showPanel</td>
+<td>显示整个控件</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>事件全部可由new对象的on方法捕获</li>
+</ul>
+<pre><code>  var a = new DateTimePicker({一些乱七八糟的配置});
+  a.on(&#39;hidePanle&#39;, function() {
+      alert(&#39;我爱承风咯咯~&#39;);
+  });
+</code></pre><ul>
+<li><p>内置方法</p>
+<ul>
+<li>show()<ul>
+<li>显示和返回创建的组件元素本身</li>
+</ul>
+</li>
+<li>hide()<ul>
+<li>隐藏组件</li>
+</ul>
+</li>
+<li>getDate() <code>new</code><ul>
+<li>获取当前的日期，返回值为Date对象</li>
+<li>只保证该返回值的 年月日 是正确（选择）的年月日</li>
+</ul>
+</li>
+<li>getTime() <code>new</code><ul>
+<li>获取当前的时间，返回值为Date对象</li>
+<li>只保证该返回值的 时分秒 是正确（选择）的时分秒</li>
+</ul>
+</li>
+<li>getDateTime() <code>new</code><ul>
+<li>获取当前的日期和时间，返回值为Date对象</li>
+</ul>
+</li>
+<li>getDateStr() <code>new</code><ul>
+<li>获取当前的日期，返回值为格式化后的字符串</li>
+</ul>
+</li>
+<li>getTimeStr() <code>new</code><ul>
+<li>获取当前的时间，返回值为格式化后的字符串</li>
+</ul>
+</li>
+<li>getDateTimeStr() <code>new</code><ul>
+<li>获取当前的日期和时间，返回值为格式化后的字符串</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>基本样式</p>
+<ul>
+<li>组件最外层className <code>ks-dtp</code></li>
+<li>日历组件最外层className <code>dtp-date</code></li>
+<li>时间组件最外层className <code>dtp-time</code></li>
+<li>按钮的className <code>.ks-dtp .icon</code></li>
+<li><code>.ks-dtp</code>选择器下的全局样式修改<ul>
+<li>修改了table的样式<ul>
+<li>border-collapse: collapse;</li>
+<li>border-spacing: 2px;</li>
+<li>border-color: gray;</li>
+</ul>
+</li>
+<li>添加了全局的字体<ul>
+<li>font-family: &#39;ksDtpIcon&#39;;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="bug-">bug和建议</h2>
+<ul>
+<li>请随时邮件、旺旺、github提bug、github发pull request...联系，感谢.</li>
+</ul>
+
+          <div style="display:none;"><script type="text/javascript" src="http://tajs.qq.com/stats?sId=36378479" charset="UTF-8"></script></div>
+          <script src="http://docs.kissyui.com/1.4/source/guideline/templates/assets/com.js"></script>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
