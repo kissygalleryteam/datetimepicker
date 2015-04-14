@@ -1,3 +1,4 @@
 {
-    "runner":"./1.0/test/runner.html"
+    "runner":"./test/runner.html",
+    "test": 123
 }

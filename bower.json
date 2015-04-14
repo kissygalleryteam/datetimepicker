@@ -1,0 +1,14 @@
+{
+    "name": "datetimepicker",
+    "version": "2.0.0",
+    "main": "index.js",
+    "ignore": [
+        "**/*",
+        "!index.js",
+        "!base.css",
+        "!lib/**/*"
+    ],
+    "dependencies": {
+        "moment": "kg/moment#2.0.1"
+    }
+}
