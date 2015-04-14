@@ -247,3 +247,10 @@
     color: #fff;
     background: #FCBC7C;
 }
+
+.dtp-date .data-calendar .disable-date,
+.dtp-time .time-picker .disable-time {
+    cursor: not-allowed;
+    color: #c30000;
+    background-color: #F4B9B9;
+}
